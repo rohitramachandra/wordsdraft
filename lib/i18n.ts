@@ -1,9 +1,10 @@
-export type Language = "en" | "kn" | "te" | "hi"
+export type Language = "en" | "kn" | "te" | "hi";
 
 export const translations = {
   en: {
     // Common
-    welcome: "Welcome to World of Wise",
+    siteName: "WordsMyth",
+    welcome: "welcomes you!",
     createAccount: "Create a free account",
     loginToAccount: "Login to your account",
     alreadyHaveAccount: "Already have an account",
@@ -12,12 +13,20 @@ export const translations = {
     login: "Login",
     signUp: "Sign-Up",
     back: "Back",
+    orSignUp: "Or Sign-up with Social accounts",
+    orLogin: "Or Login with Social accounts",
+    resendOTP: "Resend OTP",
 
     // Form fields
     enterName: "Enter your Name",
     enterEmail: "Enter your Email",
     enterPhone: "Enter your Phone number",
     enterMobileEmail: "Enter your registered Mobile Number / Email ID",
+
+    // Placeholders
+    fullNamePlaceholder: "Full name",
+    emailPlaceholder: "Email address",
+    phonePlaceholder: "Phone number",
 
     // Social login
     signUpGoogle: "Sign up with Google",
@@ -47,10 +56,14 @@ export const translations = {
     homeSubtitle: "Connect, Share, and Discover",
     getStarted: "Get Started",
     learnMore: "Learn More",
+
+    // Loading
+    loggingIn: "Logging in...",
   },
   kn: {
     // Common
-    welcome: "ವರ್ಲ್ಡ್ ಆಫ್ ವೈಸ್‌ಗೆ ಸ್ವಾಗತ",
+    siteName: "ವರ್ಡ್ಸ್‌ಮಿತ್‌",
+    welcome: "ಗೆ ಸುಸ್ವಾಗತ",
     createAccount: "ಉಚಿತ ಖಾತೆಯನ್ನು ರಚಿಸಿ",
     loginToAccount: "ನಿಮ್ಮ ಖಾತೆಗೆ ಲಾಗಿನ್ ಮಾಡಿ",
     alreadyHaveAccount: "ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೀರಾ",
@@ -59,12 +72,20 @@ export const translations = {
     login: "ಲಾಗಿನ್",
     signUp: "ಸೈನ್-ಅಪ್",
     back: "ಹಿಂದೆ",
+    orSignUp: "ಅಥವಾ ಸಾಮಾಜಿಕ ಖಾತೆಗಳೊಂದಿಗೆ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
+    orLogin: "ಅಥವಾ ಸಾಮಾಜಿಕ ಖಾತೆಗಳೊಂದಿಗೆ ಲಾಗಿನ್ ಮಾಡಿ",
+    resendOTP: "OTP ಮತ್ತೆ ಕಳುಹಿಸಿ",
 
     // Form fields
     enterName: "ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
     enterEmail: "ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ",
     enterPhone: "ನಿಮ್ಮ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
     enterMobileEmail: "ನಿಮ್ಮ ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ / ಇಮೇಲ್ ಐಡಿ ನಮೂದಿಸಿ",
+
+    // Placeholders
+    fullNamePlaceholder: "ಪೂರ್ಣ ಹೆಸರು",
+    emailPlaceholder: "ಇಮೇಲ್ ವಿಳಾಸ",
+    phonePlaceholder: "ದೂರವಾಣಿ ಸಂಖ್ಯೆ",
 
     // Social login
     signUpGoogle: "Google ನೊಂದಿಗೆ ಸೈನ್ ಅಪ್ ಮಾಡಿ",
@@ -94,10 +115,14 @@ export const translations = {
     homeSubtitle: "ಸಂಪರ್ಕಿಸಿ, ಹಂಚಿಕೊಳ್ಳಿ ಮತ್ತು ಅನ್ವೇಷಿಸಿ",
     getStarted: "ಪ್ರಾರಂಭಿಸಿ",
     learnMore: "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+
+    // Loading
+    loggingIn: "ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ...",
   },
   te: {
     // Common
-    welcome: "వరల్డ్ ఆఫ్ వైజ్‌కు స్వాగతం",
+    siteName: "వర్డ్స్ మిత్",
+    welcome: "కు స్వాగతం",
     createAccount: "ఉచిత ఖాతాను సృష్టించండి",
     loginToAccount: "మీ ఖాతాలోకి లాగిన్ చేయండి",
     alreadyHaveAccount: "ఇప్పటికే ఖాతా ఉందా",
@@ -106,6 +131,14 @@ export const translations = {
     login: "లాగిన్",
     signUp: "సైన్-అప్",
     back: "వెనుకకు",
+    orSignUp: "లేదా సామాజిక ఖాతాలతో సైన్ అప్ చేయండి",
+    orLogin: "లేదా సామాజిక ఖాతాలతో లాగిన్ అవ్వండి",
+    resendOTP: "OTP ని మళ్ళీ పంపండి",
+
+    // Placeholders
+    fullNamePlaceholder: "పూర్తి పేరు",
+    emailPlaceholder: "ఇమెయిల్ చిరునామా",
+    phonePlaceholder: "ఫోన్ నంబర్",
 
     // Form fields
     enterName: "మీ పేరును నమోదు చేయండి",
@@ -141,10 +174,14 @@ export const translations = {
     homeSubtitle: "కనెక్ట్ చేయండి, షేర్ చేయండి మరియు కనుగొనండి",
     getStarted: "ప్రారంభించండి",
     learnMore: "మరింత తెలుసుకోండి",
+
+    // Loading
+    loggingIn: "లాగిన్ అవుతోంది...",
   },
   hi: {
     // Common
-    welcome: "वर्ल्ड ऑफ वाइज में आपका स्वागत है",
+    siteName: "वर्ड्समिथ",
+    welcome: "में आपका स्वागत है",
     createAccount: "एक मुफ्त खाता बनाएं",
     loginToAccount: "अपने खाते में लॉगिन करें",
     alreadyHaveAccount: "पहले से खाता है",
@@ -153,12 +190,20 @@ export const translations = {
     login: "लॉगिन",
     signUp: "साइन-अप",
     back: "वापस",
+    orSignUp: "या सोशल अकाउंट के साथ साइन-अप करें",
+    orLogin: "या सोशल अकाउंट से लॉगिन करें",
+    resendOTP: "OTP पुनः भेजें",
 
     // Form fields
     enterName: "अपना नाम दर्ज करें",
     enterEmail: "अपना ईमेल दर्ज करें",
     enterPhone: "अपना फोन नंबर दर्ज करें",
     enterMobileEmail: "अपना पंजीकृत मोबाइल नंबर / ईमेल आईडी दर्ज करें",
+
+    // Placeholders
+    fullNamePlaceholder: "पूरा नाम",
+    emailPlaceholder: "मेल पता",
+    phonePlaceholder: "फ़ोन नंबर",
 
     // Social login
     signUpGoogle: "Google के साथ साइन अप करें",
@@ -188,9 +233,12 @@ export const translations = {
     homeSubtitle: "जुड़ें, साझा करें और खोजें",
     getStarted: "शुरू करें",
     learnMore: "और जानें",
+
+    // Loading
+    loggingIn: "लॉगिन हो रहा है...",
   },
-}
+};
 
 export const useTranslation = (language: Language) => {
-  return translations[language]
-}
+  return translations[language];
+};
