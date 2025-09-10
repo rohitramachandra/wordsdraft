@@ -1,38 +1,47 @@
-import { cookies } from 'next/headers'
 import { randomUUID } from 'crypto'
 import prisma from '@/utils/db'
-import { setHttpOnlyCookie, clearCookie } from '@/utils/cookies'
-
-const COOKIE = process.env.SESSION_COOKIE_NAME!
-const TTL = Number(process.env.SESSION_TTL_SECONDS! || 2592000)
+import { TTL } from '@/services/constants'
 
 export async function createSession(userId: string, ip?: string, ua?: string) {
-  const id = randomUUID()
   const now = new Date()
+
+  // Check if active session exists for same UA
+  const existing = await prisma.session.findFirst({
+    where: {
+      userId,
+      userAgent: ua,
+      expiresAt: { gt: now },
+    },
+  })
+
+  if (existing) {
+    // refresh cookie to keep same session alive
+    return { id: existing.id, expiresAt: existing.expiresAt }
+  }
+
+  const id = randomUUID()
   const expiresAt = new Date(now.getTime() + TTL * 1000)
   await prisma.session.create({
     data: { id, userId, expiresAt, ip, userAgent: ua },
   })
-  setHttpOnlyCookie(COOKIE, id, expiresAt)
   return { id, expiresAt }
 }
 
-export async function getSession() {
-  const cookie = (await cookies()).get(COOKIE)?.value
-  if (!cookie) return null
-  const session = await prisma.session.findUnique({
-    where: { id: cookie },
-  })
-  return session
+export async function getSession(sessionId: string) {
+  if (sessionId) {
+    const session = await prisma.session.findUnique({
+      where: { id: sessionId },
+    })
+    return session
+  }
 }
 
-export async function destroySession() {
-  const cookie = (await cookies()).get(COOKIE)?.value
-  if (cookie)
+export async function destroySession(sessionId: string) {
+  if (sessionId) {
     await prisma.session
       .delete({
-        where: { id: cookie },
+        where: { id: sessionId },
       })
       .catch(() => {})
-  clearCookie(COOKIE)
+  }
 }

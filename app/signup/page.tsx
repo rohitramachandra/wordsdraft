@@ -67,10 +67,10 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#c49f67]/25 dark:bg-slate-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-uibg dark:bg-slate-950 flex items-center justify-center p-4">
       <div className="absolute top-4 right-4 flex gap-2 items-center">
         <Button
-          className="dark:bg-slate-950 bg-gray-100 text-black dark:text-white border-2 border-gray-500/25 hover:bg-black/25 dark:hover:bg-white/25 transition-colors rounded py-0 h-8"
+          className="dark:bg-slate-950 bg-uibgf text-black dark:text-white border-2 border-gray-500/25 hover:bg-black/25 dark:hover:bg-white/25 transition-colors rounded py-0 h-8"
           onClick={() => {
             document.documentElement.classList.toggle('dark')
           }}
@@ -80,7 +80,7 @@ export default function SignupPage() {
         <LanguageSelector />
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded shadow-sm border border-gray-200 dark:border-slate-800 p-8 w-full max-w-md">
+      <div className="bg-uibgf dark:bg-slate-900 rounded shadow-sm border-2 border-white dark:border-slate-800 p-8 w-full max-w-md">
         <div className="text-center mb-4">
           <p
             className={cn(
@@ -88,10 +88,7 @@ export default function SignupPage() {
               getLanguageFont(t.welcome)
             )}
           >
-            <span /* className="text-teal-600" */ className="text-[#d0812b]">
-              {t.siteName}
-            </span>{' '}
-            {t.welcome}
+            <span className="text-uiacc">{t.siteName}</span> {t.welcome}
           </p>
           <h1
             className={cn(
@@ -129,7 +126,7 @@ export default function SignupPage() {
               value={formData.name}
               onChange={handleInputChange}
               className={cn(
-                'h-12 border-gray-300 dark:border-gray-800 rounded',
+                'h-12 border-gray-300 dark:border-gray-800 rounded dark:bg-slate-800',
                 getLanguageFont(t.fullNamePlaceholder)
               )}
               required
@@ -152,7 +149,7 @@ export default function SignupPage() {
               value={formData.email}
               onChange={handleInputChange}
               className={cn(
-                'h-12 border-gray-300 dark:border-gray-800 rounded',
+                'h-12 border-gray-300 dark:border-gray-800 rounded dark:bg-slate-800',
                 getLanguageFont(t.emailPlaceholder)
               )}
               required
@@ -186,8 +183,7 @@ export default function SignupPage() {
             type="submit"
             disabled={isLoading}
             className={cn(
-              'w-full bg-teal-600 hover:bg-teal-700 text-white h-12 rounded font-medium',
-              'bg-[#d0812b]',
+              'w-full bg-uiacc hover:bg-uiacchl text-white h-12 rounded font-medium',
               getLanguageFont(t.verify)
             )}
           >
@@ -199,8 +195,7 @@ export default function SignupPage() {
           <Link
             href="/login"
             className={cn(
-              'text-teal-600 hover:text-teal-800 dark:hover:text-teal-400 text-sm font-medium',
-              'text-[#d0812b]',
+              'text-uiacc hover:text-uiacchl dark:hover:text-uiacchl text-sm font-medium',
               getLanguageFont(t.alreadyHaveAccount)
             )}
           >
@@ -215,7 +210,7 @@ export default function SignupPage() {
           <div className="relative flex justify-center text-sm">
             <span
               className={cn(
-                'px-4 bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-300',
+                'px-4 bg-uibgf dark:bg-slate-900 text-gray-500 dark:text-gray-300',
                 getLanguageFont(t.orSignUp)
               )}
             >

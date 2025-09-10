@@ -1,7 +1,6 @@
+import { z } from 'zod'
 import { consumeOtp } from '@/services/auth/otp.service'
 import { findOrCreateUserByEmail } from '@/services/auth/user.service'
-import { createSession } from '@/services/auth/session.service'
-import { z } from 'zod'
 
 export async function POST(req: Request) {
   const { email, code } = z
@@ -23,6 +22,5 @@ export async function POST(req: Request) {
       status: 404,
     })
   }
-  await createSession(user.id)
   return Response.json({ ok: true, id: user.id })
 }

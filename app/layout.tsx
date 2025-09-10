@@ -1,52 +1,68 @@
-import type React from "react";
-import type { Metadata } from "next";
+import type React from 'react'
+import type { Metadata } from 'next'
 import {
   Anek_Devanagari,
   Anek_Kannada,
   Anek_Telugu,
   Anek_Latin,
-} from "next/font/google";
-import "./globals.css";
-import { AuthProvider } from "@/contexts/auth-context";
-import { LanguageProvider } from "@/contexts/language-context";
-import { Suspense } from "react";
+} from 'next/font/google'
+import './globals.css'
+import { AuthProvider } from '@/contexts/auth-context'
+import { LanguageProvider } from '@/contexts/language-context'
+import { Suspense } from 'react'
+import { cookies } from 'next/headers'
+import { COOKIE } from '@/nextConstants'
 
 const anekDevanagari = Anek_Devanagari({
-  subsets: ["devanagari", "latin"],
-  variable: "--font-anek-devanagari",
-  display: "swap",
-});
+  subsets: ['devanagari', 'latin'],
+  variable: '--font-anek-devanagari',
+  display: 'swap',
+})
 
 const anekKannada = Anek_Kannada({
-  subsets: ["kannada", "latin"],
-  variable: "--font-anek-kannada",
-  display: "swap",
-});
+  subsets: ['kannada', 'latin'],
+  variable: '--font-anek-kannada',
+  display: 'swap',
+})
 
 const anekTelugu = Anek_Telugu({
-  subsets: ["telugu", "latin"],
-  variable: "--font-anek-telugu",
-  display: "swap",
-});
+  subsets: ['telugu', 'latin'],
+  variable: '--font-anek-telugu',
+  display: 'swap',
+})
 
 const anekLatin = Anek_Latin({
-  subsets: ["latin"],
-  variable: "--font-anek-latin",
-  weight: ["300", "400", "700"],
-  display: "swap",
-});
+  subsets: ['latin'],
+  variable: '--font-anek-latin',
+  weight: ['300', '400', '700'],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: "WordWise - Social Media Platform",
-  description: "Connect with the world through WordWise",
-  generator: "v0.app",
-};
+  title: 'WordWise - Social Media Platform',
+  description: 'Connect with the world through WordWise',
+  generator: 'v0.app',
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
+  const cookie = (await cookies()).get(COOKIE)?.value
+  let user = null
+  if (cookie) {
+    const session = await prisma?.session.findUnique({
+      where: { id: cookie },
+      include: { user: true },
+    })
+    if (!session || session.expiresAt < new Date()) {
+      user = null
+    } else {
+      user = session.user
+    }
+  }
+
   return (
     <html lang="en">
       <body
@@ -54,10 +70,10 @@ export default function RootLayout({
       >
         <Suspense fallback={null}>
           <LanguageProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider session_user={user}>{children}</AuthProvider>
           </LanguageProvider>
         </Suspense>
       </body>
     </html>
-  );
+  )
 }

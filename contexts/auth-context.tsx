@@ -1,6 +1,7 @@
 'use client'
 
-import { loginWithPasskey, setupPasskey } from '@/lib/auth'
+import { loginWithPasskey, setupPasskey } from '@/lib/passkey.auth'
+import { User } from '@prisma/client'
 import {
   createContext,
   useContext,
@@ -8,13 +9,6 @@ import {
   useEffect,
   type ReactNode,
 } from 'react'
-
-interface User {
-  id: string
-  name: string
-  email: string
-  phone?: string
-}
 
 interface AuthContextType {
   user: User | null
@@ -31,17 +25,27 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+export function AuthProvider({
+  session_user,
+  children,
+}: {
+  session_user: User | null
+  children: ReactNode
+}) {
+  const [user, setUser] = useState<User | null>(session_user)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    // Check for existing session
-    const savedUser = localStorage.getItem('wordwise_user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+    const fetchUser = async () => {
+      const res = await fetch('/api/auth/me')
+      if (res.ok) {
+        const data = await res.json()
+        setUser(data.user)
+      } else {
+        setUser(null)
+      }
     }
-    setIsLoading(false)
+    fetchUser()
   }, [])
 
   const login = async (email: string): Promise<boolean> => {
@@ -84,9 +88,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return true
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+    })
     setUser(null)
-    localStorage.removeItem('wordwise_user')
   }
 
   return (

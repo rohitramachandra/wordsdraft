@@ -1,27 +1,27 @@
-"use client";
+'use client'
 
-import { useLanguage } from "@/contexts/language-context";
-import type { Language } from "@/lib/i18n";
-import { Button } from "@/components/ui/button";
+import { useLanguage } from '@/contexts/language-context'
+import type { Language } from '@/lib/i18n'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Globe } from "lucide-react";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu'
+import { Globe } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const languages = [
-  { code: "en" as Language, name: "English", fontClass: "font-english" },
-  { code: "kn" as Language, name: "ಕನ್ನಡ", fontClass: "font-kannada" },
-  { code: "te" as Language, name: "తెలుగు", fontClass: "font-telugu" },
-  { code: "hi" as Language, name: "हिंदी", fontClass: "font-devanagari" },
-];
+  { code: 'en' as Language, name: 'English', fontClass: 'font-english' },
+  { code: 'kn' as Language, name: 'ಕನ್ನಡ', fontClass: 'font-kannada' },
+  { code: 'te' as Language, name: 'తెలుగు', fontClass: 'font-telugu' },
+  { code: 'hi' as Language, name: 'हिंदी', fontClass: 'font-devanagari' },
+]
 
 export function LanguageSelector() {
-  const { language, setLanguage } = useLanguage();
-  const currentLang = languages.find((l) => l.code === language);
+  const { language, setLanguage } = useLanguage()
+  const currentLang = languages.find((l) => l.code === language)
 
   return (
     <DropdownMenu>
@@ -29,7 +29,7 @@ export function LanguageSelector() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2 bg-transparent min-w-32 rounded"
+          className="dark:bg-slate-950 bg-uibgf text-black dark:text-white border-2 border-gray-500/25 hover:bg-black/25 dark:hover:bg-white/25 transition-colors rounded py-0 h-8 min-w-24"
         >
           <Globe className="h-4 w-4" />
           <span className={cn(currentLang?.fontClass)}>
@@ -46,9 +46,9 @@ export function LanguageSelector() {
             key={lang.code}
             onClick={() => setLanguage(lang.code)}
             className={cn(
-              "dark:hover:bg-slate-800 min-w-36 rounded",
-              language === lang.code ? "bg-accent dark:bg-slate-950" : "",
-              lang.fontClass,
+              'dark:hover:bg-slate-800 min-w-36 rounded',
+              language === lang.code ? 'bg-accent dark:bg-slate-950' : '',
+              lang.fontClass
             )}
           >
             {lang.name}
@@ -56,5 +56,5 @@ export function LanguageSelector() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

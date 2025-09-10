@@ -8,50 +8,54 @@ generator client {
 }
 
 model User {
-  id              String   @id @default(cuid())
-  email           String   @unique
-  penName         String   @unique
-  about           String   @default("")
-  dImage          String   @default("")
-  bImage          String   @default("")
-  profession      String   @default("")
-  occupation      String   @default("")
-  language        String   @default("")
-  passkeys        Passkey[]
-  createdAt       DateTime @default(now())
+  id         String    @id @default(cuid())
+  email      String    @unique
+  penName    String    @unique
+  about      String    @default("")
+  dImage     String    @default("")
+  bImage     String    @default("")
+  profession String    @default("")
+  occupation String    @default("")
+  language   String    @default("")
+  passkeys   Passkey[]
+  sessions   Session[]
+  createdAt  DateTime  @default(now())
 }
 
 model Passkey {
-  id                 String   @id @default(cuid())
-  userId             String
-  user               User     @relation(fields: [userId], references: [id])
-  credentialId       String   @unique
-  publicKey          String
-  counter            Int      @default(0)
-  transports         String?  // JSON array
-  createdAt          DateTime @default(now())
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  credentialId String   @unique
+  publicKey    String
+  counter      Int      @default(0)
+  transports   String? // JSON array
+  createdAt    DateTime @default(now())
 }
 
 model OtpCode {
-  id          String   @id @default(cuid())
-  email       String
-  codeHash    String   // store hashed code, never plain
-  expiresAt   DateTime
-  consumedAt  DateTime?
-  createdAt   DateTime @default(now())
-  ip          String?
-  userAgent   String?
+  id         String    @id @default(cuid())
+  email      String
+  codeHash   String // store hashed code, never plain
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  ip         String?
+  userAgent  String?
+
   @@index([email])
   @@index([expiresAt])
 }
 
 model Session {
-  id         String   @id // opaque random ID stored in cookie
-  userId     String
-  createdAt  DateTime @default(now())
-  expiresAt  DateTime
-  ip         String?
-  userAgent  String?
+  id        String   @id // opaque random ID stored in cookie
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  ip        String?
+  userAgent String?
+
   @@index([userId])
   @@index([expiresAt])
 }

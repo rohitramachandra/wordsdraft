@@ -5,12 +5,9 @@ import {
   generateAuthenticationOptions,
   verifyAuthenticationResponse,
 } from '@simplewebauthn/server'
-
-const rpID = process.env.RP_ID!
-const rpName = process.env.RP_NAME || 'WordsMyth'
-
 import redis from '@/utils/redis'
 import { Prisma } from '@prisma/client'
+import { APP_ORIGIN, rpID, rpName } from '@/services/constants'
 
 const encoder = new TextEncoder()
 
@@ -45,7 +42,7 @@ export async function finishPasskeyRegistration(userId: string, response: any) {
     response,
     expectedChallenge,
     expectedRPID: rpID,
-    expectedOrigin: process.env.APP_ORIGIN!,
+    expectedOrigin: APP_ORIGIN,
   })
 
   if (!verification || !verification.registrationInfo)
@@ -121,7 +118,7 @@ export async function finishPasskeyLogin(email: string, response: any) {
     response,
     expectedChallenge,
     expectedRPID: rpID,
-    expectedOrigin: process.env.APP_ORIGIN!,
+    expectedOrigin: APP_ORIGIN,
     credential: {
       id: passkey.credentialId,
       publicKey: Buffer.from(passkey.publicKey, 'base64url'),

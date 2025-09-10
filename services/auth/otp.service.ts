@@ -1,8 +1,7 @@
 import prisma from '@/utils/db'
 import { hashCode, verifyCode } from '@/utils/crypto'
 import { addMinutes, isBefore } from 'date-fns'
-
-const OTP_TTL_MINS = 5
+import { OTP_TTL_MINS } from '@/services/constants'
 
 export async function issueOTP(email: string, ip?: string, ua?: string) {
   const code = Math.floor(1000 + Math.random() * 9000).toString()
