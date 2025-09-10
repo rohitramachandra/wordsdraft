@@ -22,12 +22,12 @@ export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    //phone: '',
     password: '',
   })
   const [setupPasskey, setSetupPasskey] = useState(false)
   const [showOtpModal, setShowOtpModal] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -45,12 +45,14 @@ export default function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     const response = await requestOtp(formData.email)
     if (response.ok) setShowOtpModal(true)
     else {
       const data = await response.json()
       setError(data.message)
     }
+    setLoading(false)
   }
 
   const handleOtpVerify = async (otp: string) => {
@@ -195,13 +197,13 @@ export default function SignupPage() {
           </div>
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || loading}
             className={cn(
               'w-full bg-uiacc hover:bg-uiacchl text-white h-12 rounded font-medium',
               getLanguageFont(t.verify)
             )}
           >
-            {t.verify}
+            {isLoading || loading ? t.verifying : t.verify}
           </Button>
         </form>
 

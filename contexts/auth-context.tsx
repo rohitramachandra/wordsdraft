@@ -59,19 +59,20 @@ export function AuthProvider({
 
     const { type, status, user } = await loginWithPasskey(email)
 
-    if (type === 'otp') {
-      return { success: true, otp: true }
-    } else {
-      if (user) {
+    if (status === 'success') {
+      if (type === 'otp') {
+        setIsLoading(false)
+        return { success: true, otp: true }
+      } else if (type === 'passkey' && user) {
         setUser(user)
         setIsLoading(false)
         return { success: true, otp: false }
-      } else {
-        setUser(null)
-        setIsLoading(false)
-        return { success: false, otp: false }
       }
     }
+
+    setUser(null)
+    setIsLoading(false)
+    return { success: false, otp: false }
   }
 
   const login_confirm = async (

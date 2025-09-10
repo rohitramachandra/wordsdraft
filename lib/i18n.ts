@@ -59,6 +59,7 @@ export const translations = {
 
     // Loading
     loggingIn: 'Logging in...',
+    verifying: 'Verifying...',
   },
   kn: {
     // Common
@@ -118,6 +119,7 @@ export const translations = {
 
     // Loading
     loggingIn: 'ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ...',
+    verifying: 'ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...',
   },
   te: {
     // Common
@@ -177,6 +179,7 @@ export const translations = {
 
     // Loading
     loggingIn: 'లాగిన్ అవుతోంది...',
+    verifying: 'పరిశీలించబడుతోంది...',
   },
   hi: {
     // Common
@@ -236,6 +239,7 @@ export const translations = {
 
     // Loading
     loggingIn: 'लॉगिन हो रहा है...',
+    verifying: 'जांच हो रही है...',
   },
 }
 

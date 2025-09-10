@@ -26,34 +26,39 @@ async function loginWithOTP(email: string) {
 }
 
 export async function loginWithPasskey(email: string) {
-  // Ask backend for login options
-  const res = await fetch('/api/auth/passkey/login-start', {
-    method: 'POST',
-    body: JSON.stringify({ email }),
-  })
-  const { hasPasskeys, options } = await res.json()
+  try {
+    // Ask backend for login options
+    const res = await fetch('/api/auth/passkey/login-start', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    })
+    const { hasPasskeys, options } = await res.json()
 
-  if (!hasPasskeys) {
-    // fallback to OTP
-    return await loginWithOTP(email)
-  }
+    if (!hasPasskeys) {
+      // fallback to OTP
+      return await loginWithOTP(email)
+    }
 
-  // Browser triggers authenticator (FaceID, TouchID, etc.)
-  const assertionResp = await startAuthentication({ optionsJSON: options })
+    // Browser triggers authenticator (FaceID, TouchID, etc.)
+    const assertionResp = await startAuthentication({ optionsJSON: options })
 
-  // Send result back to backend
-  const verifyRes = await fetch('/api/auth/passkey/login-finish', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, assertionResponse: assertionResp }),
-  })
+    // Send result back to backend
+    const verifyRes = await fetch('/api/auth/passkey/login-finish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, assertionResponse: assertionResp }),
+    })
 
-  if (verifyRes.ok) {
-    console.log('Logged in with passkey')
-    const data = await verifyRes.json()
-    return { type: 'passkey', status: 'success', user: data.user }
-  } else {
-    console.error('Login failed')
+    if (verifyRes.ok) {
+      console.log('Logged in with passkey')
+      const data = await verifyRes.json()
+      return { type: 'passkey', status: 'success', user: data.user }
+    } else {
+      console.error('Login failed')
+      return { type: 'passkey', status: 'failed', user: null }
+    }
+  } catch (err) {
+    console.error('Error occured while trying to login with passkey: ', err)
     return { type: 'passkey', status: 'failed', user: null }
   }
 }
