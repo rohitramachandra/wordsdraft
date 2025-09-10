@@ -1,21 +1,21 @@
-"use client";
+'use client'
 
-import type React from "react";
+import type React from 'react'
 
-import { useState, useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useLanguage } from "@/contexts/language-context";
-import { X, Check, RotateCcw } from "lucide-react";
-import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { useState, useRef, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useLanguage } from '@/contexts/language-context'
+import { X, Check, RotateCcw } from 'lucide-react'
+import { motion } from 'motion/react'
+import { cn } from '@/lib/utils'
 
 interface OtpModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onVerify: (otp: string) => void;
-  type: "email" | "phone" | "both";
-  contact: string;
+  isOpen: boolean
+  onClose: () => void
+  onVerify: (otp: string) => void
+  type: 'email' | 'phone' | 'both'
+  contact: string
 }
 
 export function OtpModal({
@@ -25,71 +25,71 @@ export function OtpModal({
   type,
   contact,
 }: OtpModalProps) {
-  const { t, getLanguageFont } = useLanguage();
-  const [otp, setOtp] = useState(["", "", "", ""]);
-  const [isVerified, setIsVerified] = useState(false);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const { t, getLanguageFont } = useLanguage()
+  const [otp, setOtp] = useState(['', '', '', ''])
+  const [isVerified, setIsVerified] = useState(false)
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   useEffect(() => {
     if (isOpen && !isVerified) {
-      inputRefs.current[0]?.focus();
+      inputRefs.current[0]?.focus()
     }
-  }, [isOpen, isVerified]);
+  }, [isOpen, isVerified])
 
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) return;
+    if (value.length > 1) return
 
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
+    const newOtp = [...otp]
+    newOtp[index] = value
+    setOtp(newOtp)
 
     if (value && index < 3) {
-      inputRefs.current[index + 1]?.focus();
+      inputRefs.current[index + 1]?.focus()
     }
-  };
+  }
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus()
     }
-  };
+  }
 
   const handleVerify = () => {
-    const otpString = otp.join("");
+    const otpString = otp.join('')
     if (otpString.length === 4) {
-      setIsVerified(true);
+      setIsVerified(true)
       setTimeout(() => {
-        onVerify(otpString);
-        handleClose();
-      }, 1500);
+        onVerify(otpString)
+        handleClose()
+      }, 1500)
     }
-  };
+  }
 
   const handleClose = () => {
-    setOtp(["", "", "", ""]);
-    setIsVerified(false);
-    onClose();
-  };
+    setOtp(['', '', '', ''])
+    setIsVerified(false)
+    onClose()
+  }
 
   const getTitle = () => {
     if (isVerified) {
-      return type === "both"
+      return type === 'both'
         ? t.emailPhoneVerified
-        : type === "email"
-          ? t.emailVerified
-          : t.phoneVerified;
+        : type === 'email'
+        ? t.emailVerified
+        : t.phoneVerified
     }
-    return t.otpSent;
-  };
+    return t.otpSent
+  }
 
   const getSubtitle = () => {
-    if (isVerified) return "";
-    return type === "email"
+    if (isVerified) return ''
+    return type === 'email'
       ? t.otpSentEmail
-      : type === "phone"
-        ? t.otpSentPhone
-        : t.otpSent;
-  };
+      : type === 'phone'
+      ? t.otpSentPhone
+      : t.otpSent
+  }
 
   return (
     <motion.div
@@ -104,7 +104,7 @@ export function OtpModal({
         animate={{ scale: 1 }}
         exit={{ scale: 0.5 }}
         transition={{ duration: 0.2 }}
-        className="bg-teal-500/25 border-2 border-teal-500/50 p-1 backdrop-blur-sm w-full max-w-md rounded"
+        className="bg-uiacc/25 border-2 border-uiacc/50 p-1 backdrop-blur-sm w-full max-w-md rounded"
       >
         <div className="bg-white dark:bg-slate-900 rounded p-6 w-full max-w-md relative">
           <button
@@ -115,18 +115,13 @@ export function OtpModal({
           </button>
 
           <div className="text-center mb-6">
-            <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg viewBox="0 0 24 24" className="w-6 h-6 fill-white">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-              </svg>
-            </div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-300 mb-2">
               WordsMyth
             </h2>
             <p
               className={cn(
-                "text-sm text-gray-600 dark:text-gray-400 mb-1",
-                getLanguageFont(getTitle()),
+                'text-sm text-gray-600 dark:text-gray-400 mb-1',
+                getLanguageFont(getTitle())
               )}
             >
               {getTitle()}
@@ -158,9 +153,9 @@ export function OtpModal({
               </div>
 
               <div
-                className={cn("flex justify-end", getLanguageFont(t.resendOTP))}
+                className={cn('flex justify-end', getLanguageFont(t.resendOTP))}
               >
-                <button className="group text-teal-600 hover:text-teal-800 dark:hover:text-teal-400 text-sm px-4 py-2 flex gap-1 items-center">
+                <button className="group text-uiacc hover:text-uiacchl dark:hover:text-uiacchl text-sm px-4 py-2 flex gap-1 items-center">
                   <RotateCcw
                     size={14}
                     className="group-hover:-rotate-360 transition-transform duration-300"
@@ -170,10 +165,10 @@ export function OtpModal({
               </div>
               <Button
                 onClick={handleVerify}
-                disabled={otp.join("").length !== 4}
+                disabled={otp.join('').length !== 4}
                 className={cn(
-                  "w-full bg-teal-600 hover:bg-teal-700 text-white h-12",
-                  getLanguageFont(t.verify),
+                  'w-full bg-uiacc hover:bg-uiacchl text-white h-12',
+                  getLanguageFont(t.verify)
                 )}
               >
                 {t.verify}
@@ -183,5 +178,5 @@ export function OtpModal({
         </div>
       </motion.div>
     </motion.div>
-  );
+  )
 }

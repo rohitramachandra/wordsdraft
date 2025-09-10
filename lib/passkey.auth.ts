@@ -13,13 +13,30 @@ export async function setupPasskey(email: string, userId: string) {
   })
 }
 
+async function loginWithOTP(email: string) {
+  const res = await fetch('/api/auth/otp/login', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  })
+
+  if (!res.ok) throw new Error('OTP login failed')
+
+  // Probably trigger OTP UI for user to enter code
+  return { type: 'otp', status: 'sent', user: null }
+}
+
 export async function loginWithPasskey(email: string) {
   // Ask backend for login options
   const res = await fetch('/api/auth/passkey/login-start', {
     method: 'POST',
     body: JSON.stringify({ email }),
   })
-  const options = await res.json()
+  const { hasPasskeys, options } = await res.json()
+
+  if (!hasPasskeys) {
+    // fallback to OTP
+    return await loginWithOTP(email)
+  }
 
   // Browser triggers authenticator (FaceID, TouchID, etc.)
   const assertionResp = await startAuthentication({ optionsJSON: options })
@@ -34,9 +51,9 @@ export async function loginWithPasskey(email: string) {
   if (verifyRes.ok) {
     console.log('Logged in with passkey')
     const data = await verifyRes.json()
-    return data.user
+    return { type: 'passkey', status: 'success', user: data.user }
   } else {
     console.error('Login failed')
-    return null
+    return { type: 'passkey', status: 'failed', user: null }
   }
 }

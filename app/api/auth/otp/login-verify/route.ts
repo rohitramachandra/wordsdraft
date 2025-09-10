@@ -1,15 +1,14 @@
 import { z } from 'zod'
 import { consumeOtp } from '@/services/auth/otp.service'
-import { findOrCreateUserByEmail } from '@/services/auth/user.service'
+import { getUserByEmail } from '@/services/auth/user.service'
 import { NextResponse } from 'next/server'
 import { createSession } from '@/services/auth/session.service'
 import { setHttpOnlyCookie } from '@/lib/cookies'
 import { COOKIE } from '@/nextConstants'
 
 export async function POST(req: Request) {
-  const { name, email, code } = z
+  const { email, code } = z
     .object({
-      name: z.string().min(2),
       email: z.string().email(),
       code: z.string().length(4),
     })
@@ -24,7 +23,7 @@ export async function POST(req: Request) {
       }
     )
 
-  const user = await findOrCreateUserByEmail(name, email)
+  const user = await getUserByEmail(email)
   if (!user) {
     return new NextResponse(JSON.stringify({ error: 'User not found' }), {
       status: 404,

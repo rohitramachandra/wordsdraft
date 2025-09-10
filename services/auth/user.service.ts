@@ -19,7 +19,20 @@ export async function userAlreadyExists(email: string) {
   }
 }
 
-export async function findOrCreateUserByEmail(email: string) {
+export async function getUserByEmail(email: string) {
+  try {
+    const normalized = email.trim().toLocaleLowerCase()
+    let user = await prisma.user.findUnique({
+      where: { email: normalized },
+    })
+    return user
+  } catch (err) {
+    console.error('Error finding or creating a user: ', err)
+    return null
+  }
+}
+
+export async function findOrCreateUserByEmail(name: string, email: string) {
   try {
     const normalized = email.trim().toLocaleLowerCase()
     const penName = getPenNameFromEmail(normalized)
@@ -28,7 +41,7 @@ export async function findOrCreateUserByEmail(email: string) {
     })
     if (!user)
       user = await prisma.user.create({
-        data: { email: normalized, penName },
+        data: { name, email: normalized, penName },
       })
     return user
   } catch (err) {

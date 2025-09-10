@@ -1,12 +1,12 @@
 import { startPasskeyRegistration } from '@/services/auth/passkey.service'
-import { findOrCreateUserByEmail } from '@/services/auth/user.service'
+import { getUserByEmail } from '@/services/auth/user.service'
 import { z } from 'zod'
 
 export async function POST(req: Request) {
   const { email } = z
     .object({ email: z.string().email() })
     .parse(await req.json())
-  const user = await findOrCreateUserByEmail(email)
+  const user = await getUserByEmail(email)
   if (!user) {
     return new Response(JSON.stringify({ error: 'User not found' }), {
       status: 404,

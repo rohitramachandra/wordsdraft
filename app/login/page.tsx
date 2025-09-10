@@ -12,9 +12,12 @@ import { SocialLoginButtons } from '@/components/social-login-buttons'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { AlertCircle, SunMoon } from 'lucide-react'
+import { setupPasskey } from '@/lib/passkey.auth'
+import { AnimatePresence } from 'motion/react'
+import { OtpModal } from '@/components/otp-modal'
 
 export default function LoginPage() {
-  const { login, isLoading } = useAuth()
+  const { login, login_confirm, isLoading } = useAuth()
   const { t, getLanguageFont } = useLanguage()
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -23,6 +26,7 @@ export default function LoginPage() {
   })
   const [error, setError] = useState('')
   const [validationError, setValidationError] = useState('')
+  const [showOtpModal, setShowOtpModal] = useState(false)
 
   const validateInput = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -58,12 +62,23 @@ export default function LoginPage() {
       return
     }
 
-    const success = await login(formData.emailOrPhone, formData.password)
+    const { success, otp } = await login(
+      formData.emailOrPhone,
+      formData.password
+    )
 
     if (success) {
-      router.push('/')
+      if (otp) setShowOtpModal(true)
+      else router.push('/')
     } else {
-      setError('Invalid credentials. Try demo@wordwise.com or +91 9876543210')
+      setError('Invalid credentials.')
+    }
+  }
+
+  const handleOtpVerify = async (otp: string) => {
+    const success = await login_confirm(formData.emailOrPhone, otp)
+    if (success) {
+      router.push('/')
     }
   }
 
@@ -102,6 +117,13 @@ export default function LoginPage() {
           </h1>
         </div>
 
+        {error && (
+          <p className="text-red-500 text-sm flex items-center justify-center gap-2">
+            <AlertCircle className="h-4 w-4" />
+            {error}
+          </p>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-4 mb-2">
           <div>
             <label
@@ -115,7 +137,7 @@ export default function LoginPage() {
             <Input
               type="text"
               name="emailOrPhone"
-              placeholder={`${t.emailPlaceholder} / ${t.phonePlaceholder}`}
+              placeholder={`${t.emailPlaceholder}`}
               value={formData.emailOrPhone}
               onChange={handleInputChange}
               className={cn(
@@ -132,13 +154,6 @@ export default function LoginPage() {
               </p>
             )}
           </div>
-
-          {error && (
-            <p className="text-red-500 text-sm flex items-center gap-2">
-              <AlertCircle className="h-4 w-4" />
-              {error}
-            </p>
-          )}
 
           <Button
             type="submit"
@@ -182,6 +197,18 @@ export default function LoginPage() {
 
         <SocialLoginButtons isSignup={false} />
       </div>
+
+      <AnimatePresence mode="wait">
+        {showOtpModal && (
+          <OtpModal
+            isOpen={showOtpModal}
+            onClose={() => setShowOtpModal(false)}
+            onVerify={handleOtpVerify}
+            type="both"
+            contact={formData.emailOrPhone}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

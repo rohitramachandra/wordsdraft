@@ -73,6 +73,10 @@ export async function startPasskeyLogin(email: string) {
     where: { userId: user.id },
   })
 
+  if (!creds.length) {
+    return { hasPasskeys: false, options: null }
+  }
+
   const allowCredentials = creds.map((c) => ({
     id: c.credentialId,
     type: 'public-key',
@@ -90,7 +94,7 @@ export async function startPasskeyLogin(email: string) {
     options.challenge
   )
 
-  return { user, options }
+  return { user, options, hasPasskeys: true }
 }
 
 export async function finishPasskeyLogin(email: string, response: any) {

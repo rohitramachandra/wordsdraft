@@ -30,12 +30,9 @@ export async function consumeOtp(email: string, code: string) {
     if (isBefore(rec.expiresAt, now)) continue
     const ok = await verifyCode(code, rec.codeHash)
     if (ok) {
-      await prisma.otpCode.update({
+      await prisma.otpCode.delete({
         where: {
           id: rec.id,
-        },
-        data: {
-          consumedAt: now,
         },
       })
       return true

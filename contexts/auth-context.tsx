@@ -12,14 +12,18 @@ import {
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<boolean>
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; otp: boolean }>
   signup: (
     name: string,
     email: string,
-    //phone: string,
-    password: string
+    password: string,
+    setupkey?: boolean
   ) => Promise<boolean>
   logout: () => void
+  login_confirm: (email: string, code: string) => Promise<boolean>
   isLoading: boolean
 }
 
@@ -48,44 +52,73 @@ export function AuthProvider({
     fetchUser()
   }, [])
 
-  const login = async (email: string): Promise<boolean> => {
+  const login = async (
+    email: string
+  ): Promise<{ success: boolean; otp: boolean }> => {
     setIsLoading(true)
 
-    const user = await loginWithPasskey(email)
+    const { type, status, user } = await loginWithPasskey(email)
 
-    if (user) {
+    if (type === 'otp') {
+      return { success: true, otp: true }
+    } else {
+      if (user) {
+        setUser(user)
+        setIsLoading(false)
+        return { success: true, otp: false }
+      } else {
+        setUser(null)
+        setIsLoading(false)
+        return { success: false, otp: false }
+      }
+    }
+  }
+
+  const login_confirm = async (
+    email: string,
+    code: string
+  ): Promise<boolean> => {
+    setIsLoading(true)
+
+    const verifyOTP = await fetch('/api/auth/otp/login-verify', {
+      method: 'POST',
+      body: JSON.stringify({ email, code }),
+    })
+
+    if (verifyOTP.ok) {
+      const { user } = await verifyOTP.json()
       setUser(user)
       setIsLoading(false)
       return true
-    } else {
-      setUser(null)
-      setIsLoading(false)
-      return false
     }
+
+    setIsLoading(false)
+    return false
   }
 
   const signup = async (
     name: string,
     email: string,
-    //phone: string,
-    code: string
+    code: string,
+    setupkey: boolean = false
   ): Promise<boolean> => {
     setIsLoading(true)
 
     const verifyOTP = await fetch('/api/auth/otp/verify', {
       method: 'POST',
-      body: JSON.stringify({ email, code }),
+      body: JSON.stringify({ name, email, code }),
     })
 
-    console.log(verifyOTP)
     if (verifyOTP.ok) {
-      console.log('Success calling setupPassKey()')
-      const { id } = await verifyOTP.json()
-      await setupPasskey(email, id)
+      const { user } = await verifyOTP.json()
+      if (setupkey) await setupPasskey(email, user.id)
+      setUser(user)
+      setIsLoading(false)
+      return true
     }
 
     setIsLoading(false)
-    return true
+    return false
   }
 
   const logout = async () => {
@@ -96,7 +129,9 @@ export function AuthProvider({
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{ user, login, signup, logout, login_confirm, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   )

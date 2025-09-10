@@ -56,15 +56,15 @@
   --color-ocean-950: hsl(200, 50%, 20%);
 
   /* UI Colors */
-  --color-uibg: var(--color-sandtone-100);
+  /* --color-uibg: var(--color-sandtone-100);
   --color-uibgf: var(--color-sandtone-50);
   --color-uiacc: var(--color-ambergold-500);
-  --color-uiacchl: var(--color-ambergold-600);
+  --color-uiacchl: var(--color-ambergold-600); */
 
-  /* --color-uibg: var(--color-classic-100);
+  --color-uibg: var(--color-classic-100);
   --color-uibgf: var(--color-classic-50);
   --color-uiacc: var(--color-ocean-800);
-  --color-uiacchl: var(--color-ocean-700); */
+  --color-uiacchl: var(--color-ocean-700);
 
   --font-sans: var(--font-anek-latin);
   --font-mono: var(--font-geist-mono);

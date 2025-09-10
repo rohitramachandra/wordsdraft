@@ -2,6 +2,7 @@
 CREATE TABLE "public"."User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL DEFAULT '',
     "penName" TEXT NOT NULL,
     "about" TEXT NOT NULL DEFAULT '',
     "dImage" TEXT NOT NULL DEFAULT '',
@@ -76,3 +77,6 @@ CREATE INDEX "Session_expiresAt_idx" ON "public"."Session"("expiresAt");
 
 -- AddForeignKey
 ALTER TABLE "public"."Passkey" ADD CONSTRAINT "Passkey_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

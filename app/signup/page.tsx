@@ -13,7 +13,7 @@ import { OtpModal } from '@/components/otp-modal'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { AnimatePresence } from 'motion/react'
-import { MoveUpRight, SunMoon } from 'lucide-react'
+import { AlertCircle, SunMoon } from 'lucide-react'
 
 export default function SignupPage() {
   const { signup, isLoading } = useAuth()
@@ -25,6 +25,7 @@ export default function SignupPage() {
     //phone: '',
     password: '',
   })
+  const [setupPasskey, setSetupPasskey] = useState(false)
   const [showOtpModal, setShowOtpModal] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -53,12 +54,11 @@ export default function SignupPage() {
   }
 
   const handleOtpVerify = async (otp: string) => {
-    console.log('OTP verified:', otp)
     const success = await signup(
       formData.name,
       formData.email,
-      //formData.phone,
-      otp
+      otp,
+      setupPasskey
     )
 
     if (success) {
@@ -100,15 +100,12 @@ export default function SignupPage() {
           </h1>
         </div>
 
-        <p
-          className={cn(
-            error
-              ? 'text-red-600 text-xs text-center min-h-5 py-1 mb-2 rounded border-2 border-red-400/20 bg-red-400/15'
-              : 'min-h-5 py-1 mb-2 opacity-0 text-transparent bg-transparent border-none'
-          )}
-        >
-          {error}
-        </p>
+        {error && (
+          <p className="text-red-500 text-sm flex items-center gap-2 justify-center">
+            <AlertCircle className="h-4 w-4" />
+            {error}
+          </p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4 mb-2">
           <div>
             <label
@@ -127,6 +124,7 @@ export default function SignupPage() {
               onChange={handleInputChange}
               className={cn(
                 'h-12 border-gray-300 dark:border-gray-800 rounded dark:bg-slate-800',
+                error && 'border-red-500',
                 getLanguageFont(t.fullNamePlaceholder)
               )}
               required
@@ -150,6 +148,7 @@ export default function SignupPage() {
               onChange={handleInputChange}
               className={cn(
                 'h-12 border-gray-300 dark:border-gray-800 rounded dark:bg-slate-800',
+                error && 'border-red-500',
                 getLanguageFont(t.emailPlaceholder)
               )}
               required
@@ -179,6 +178,21 @@ export default function SignupPage() {
             />
           </div> */}
 
+          <div className="flex items-center bg-transparent shadow-none border-none hover:bg-transparent">
+            <Input
+              id="setupkey"
+              type="checkbox"
+              checked={setupPasskey}
+              onChange={() => setSetupPasskey(!setupPasskey)}
+              className="w-4 cursor-pointer accent-uiacc"
+            />
+            <label
+              htmlFor="setupkey"
+              className="text-gray-600 dark:text-gray-200 pl-2 text-sm cursor-pointer select-none"
+            >
+              Setup Passkey
+            </label>
+          </div>
           <Button
             type="submit"
             disabled={isLoading}
