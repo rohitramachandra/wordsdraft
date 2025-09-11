@@ -40,9 +40,11 @@ const anekLatin = Anek_Latin({
 })
 
 export const metadata: Metadata = {
-  title: 'WordWise - Social Media Platform',
-  description: 'Connect with the world through WordWise',
-  generator: 'v0.app',
+  title: 'WordsMyth',
+  description: 'Connect with the world through Words',
+  icons: {
+    icon: '/Vector.png',
+  },
 }
 
 export default async function RootLayout({

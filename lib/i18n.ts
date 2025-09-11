@@ -16,6 +16,9 @@ export const translations = {
     orSignUp: 'Or Sign-up with Social accounts',
     orLogin: 'Or Login with Social accounts',
     resendOTP: 'Resend OTP',
+    setPasskey: 'Set Passkey',
+    next: 'Next',
+    complete: 'Complete',
 
     // Form fields
     enterName: 'Enter your Name',
@@ -60,6 +63,25 @@ export const translations = {
     // Loading
     loggingIn: 'Logging in...',
     verifying: 'Verifying...',
+
+    onboarding: {
+      title: 'A Little About You',
+      subtitle: 'Help us personalize your experience.',
+      mindLanguage: 'What’s the language of your mind?',
+      mindLanguagePlaceholder: 'e.g., English, Hindi, Kannada...',
+      whereAreYouFrom: 'Where are you from?',
+      statePlaceholder: 'State',
+      districtPlaceholder: 'District',
+      whoYouAre: 'Who You Are?',
+      occupationPrompt: 'Select your occupation',
+      whoYouReallyAre: 'Who You Really Are?',
+      passionPrompt: 'Select your passion',
+      finalStep: 'Almost Done!',
+      profileDetails: 'Just a few more details to finish your profile.',
+      yourPhoto: 'Your Photo',
+      yourPhotoQuestion: 'Add your photo',
+      yourPhotoDetails: 'A picture helps others recognize you.',
+    },
   },
   kn: {
     // Common
@@ -76,6 +98,9 @@ export const translations = {
     orSignUp: 'ಅಥವಾ ಸಾಮಾಜಿಕ ಖಾತೆಗಳೊಂದಿಗೆ ಸೈನ್ ಅಪ್ ಮಾಡಿ',
     orLogin: 'ಅಥವಾ ಸಾಮಾಜಿಕ ಖಾತೆಗಳೊಂದಿಗೆ ಲಾಗಿನ್ ಮಾಡಿ',
     resendOTP: 'OTP ಮತ್ತೆ ಕಳುಹಿಸಿ',
+    setPasskey: 'ಪಾಸ್‌ಕೀ ಹೊಂದಿಸಿ',
+    next: 'ಮುಂದೆ',
+    complete: 'ಪೂರ್ಣಗೊಳಿಸಿ',
 
     // Form fields
     enterName: 'ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ',
@@ -120,6 +145,26 @@ export const translations = {
     // Loading
     loggingIn: 'ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ...',
     verifying: 'ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...',
+
+    onboarding: {
+      title: 'ನಿಮ್ಮ ಬಗ್ಗೆ ಸ್ವಲ್ಪ',
+      subtitle: 'ನಿಮ್ಮ ಅನುಭವವನ್ನು ವೈಯಕ್ತೀಕರಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿ.',
+      mindLanguage: 'ನಿಮ್ಮ ಮನಸ್ಸಿನ ಭಾಷೆ ಯಾವುದು?',
+      mindLanguagePlaceholder: 'ಉದಾ., ಇಂಗ್ಲಿಷ್, ಹಿಂದಿ, ಕನ್ನಡ...',
+      whereAreYouFrom: 'ನೀವು ಎಲ್ಲಿಯವರು?',
+      statePlaceholder: 'ರಾಜ್ಯ',
+      districtPlaceholder: 'ಜಿಲ್ಲೆ',
+      whoYouAre: 'ನೀವು ಯಾರು?',
+      occupationPrompt: 'ನಿಮ್ಮ ವೃತ್ತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+      whoYouReallyAre: 'ನಿಜವಾಗಿಯೂ ನೀವು ಯಾರು?',
+      passionPrompt: 'ನಿಮ್ಮ ಆಸಕ್ತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+      finalStep: 'ಬಹುತೇಕ ಮುಗಿದಿದೆ!',
+      profileDetails: 'ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಪೂರ್ಣಗೊಳಿಸಲು ಕೆಲವು ವಿವರಗಳು.',
+      yourPhoto: 'ನಿಮ್ಮ ಫೋಟೋ',
+      yourPhotoQuestion: 'ನಿಮ್ಮ ಫೋಟೋ ಸೇರಿಸಿ',
+      yourPhotoDetails:
+        'ಒಂದು ಚಿತ್ರವು ಇತರರು ನಿಮ್ಮನ್ನು ಗುರುತಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.',
+    },
   },
   te: {
     // Common
@@ -136,6 +181,9 @@ export const translations = {
     orSignUp: 'లేదా సామాజిక ఖాతాలతో సైన్ అప్ చేయండి',
     orLogin: 'లేదా సామాజిక ఖాతాలతో లాగిన్ అవ్వండి',
     resendOTP: 'OTP ని మళ్ళీ పంపండి',
+    setPasskey: 'పాస్‌కీని సెట్ చేయండి',
+    next: 'తదుపరి',
+    complete: 'పూర్తి చేయండి',
 
     // Placeholders
     fullNamePlaceholder: 'పూర్తి పేరు',
@@ -180,6 +228,26 @@ export const translations = {
     // Loading
     loggingIn: 'లాగిన్ అవుతోంది...',
     verifying: 'పరిశీలించబడుతోంది...',
+
+    onboarding: {
+      title: 'మీ గురించి కొద్దిగా',
+      subtitle: 'మీ అనుభవాన్ని వ్యక్తిగతీకరించడానికి మాకు సహాయం చేయండి.',
+      mindLanguage: 'మీ మనస్సు యొక్క భాష ఏమిటి?',
+      mindLanguagePlaceholder: 'ఉదా., ఇంగ్లీష్, హిందీ, కన్నడ...',
+      whereAreYouFrom: 'మీరు ఎక్కడ నుండి?',
+      statePlaceholder: 'రాష్ట్రం',
+      districtPlaceholder: 'జిల్లా',
+      whoYouAre: 'మీరు ఎవరు?',
+      occupationPrompt: 'మీ వృత్తిని ఎంచుకోండి',
+      whoYouReallyAre: 'నిజంగా మీరు ఎవరు?',
+      passionPrompt: 'మీ ఆసక్తులను ఎంచుకోండి',
+      finalStep: 'దాదాపు పూర్తయింది!',
+      profileDetails: 'మీ ప్రొఫైల్‌ను పూర్తి చేయడానికి మరికొన్ని వివరాలు.',
+      yourPhoto: 'మీ ఫోటో',
+      yourPhotoQuestion: 'మీ ఫోటోను జోడించండి',
+      yourPhotoDetails:
+        'ఒక చిత్రం ఇతరులు మిమ్మల్ని గుర్తించడానికి సహాయపడుతుంది.',
+    },
   },
   hi: {
     // Common
@@ -196,6 +264,9 @@ export const translations = {
     orSignUp: 'या सोशल अकाउंट के साथ साइन-अप करें',
     orLogin: 'या सोशल अकाउंट से लॉगिन करें',
     resendOTP: 'OTP पुनः भेजें',
+    setPasskey: 'पासकी सेट करें',
+    next: 'अगला',
+    complete: 'पूरा करें',
 
     // Form fields
     enterName: 'अपना नाम दर्ज करें',
@@ -240,6 +311,25 @@ export const translations = {
     // Loading
     loggingIn: 'लॉगिन हो रहा है...',
     verifying: 'जांच हो रही है...',
+
+    onboarding: {
+      title: 'आपके बारे में थोड़ा',
+      subtitle: 'अपने अनुभव को बेहतर बनाने में हमारी मदद करें।',
+      mindLanguage: 'आपके मन की भाषा क्या है?',
+      mindLanguagePlaceholder: 'उदा. अंग्रेजी, हिंदी, कन्नड़...',
+      whereAreYouFrom: 'आप कहाँ से हैं?',
+      statePlaceholder: 'राज्य',
+      districtPlaceholder: 'ज़िला',
+      whoYouAre: 'आप कौन हैं?',
+      occupationPrompt: 'अपना पेशा चुनें',
+      whoYouReallyAre: 'आप वास्तव में कौन हैं?',
+      passionPrompt: 'अपनी रुचि चुनें',
+      finalStep: 'बस हो गया!',
+      profileDetails: 'अपनी प्रोफ़ाइल को पूरा करने के लिए कुछ और विवरण।',
+      yourPhoto: 'आपकी तस्वीर',
+      yourPhotoQuestion: 'अपनी तस्वीर जोड़ें',
+      yourPhotoDetails: 'एक तस्वीर दूसरों को आपको पहचानने में मदद करती है।',
+    },
   },
 }
 

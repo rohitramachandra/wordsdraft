@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import prisma from '@/utils/db'
 import { COOKIE } from '@/nextConstants'
 import { getSessionUser } from '@/services/auth/session.service'
 
