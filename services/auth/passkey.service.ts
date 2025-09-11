@@ -25,9 +25,9 @@ export async function startPasskeyRegistration(userId: string, email: string) {
       type: 'public-key',
     })),
     authenticatorSelection: {
-      authenticatorAttachment: 'platform',
+      authenticatorAttachment: undefined,
       residentKey: 'preferred',
-      userVerification: 'required',
+      userVerification: 'preferred',
     },
   })
   await redis.setex(`webauthn:reg:${userId}`, 300, options.challenge)
