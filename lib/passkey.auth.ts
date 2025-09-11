@@ -22,7 +22,7 @@ async function loginWithOTP(email: string) {
   if (!res.ok) throw new Error('OTP login failed')
 
   // Probably trigger OTP UI for user to enter code
-  return { type: 'otp', status: 'sent', user: null }
+  return { type: 'otp', status: 'success', user: null }
 }
 
 export async function loginWithPasskey(email: string) {
