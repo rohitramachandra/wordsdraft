@@ -5,7 +5,7 @@ function getPenNameFromEmail(email: string) {
   else throw 'Invalid email!'
 }
 
-export async function userAlreadyExists(email: string) {
+export async function checkUserExists(email: string) {
   try {
     const normalized = email.trim().toLocaleLowerCase()
     let user = await prisma.user.findUnique({

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import prisma from '@/utils/db'
 import { COOKIE } from '@/nextConstants'
+import { getSessionUser } from '@/services/auth/session.service'
 
 export async function GET() {
   const cookie = (await cookies()).get(COOKIE)?.value
@@ -9,14 +10,9 @@ export async function GET() {
     return NextResponse.json({ user: null }, { status: 401 })
   }
 
-  const session = await prisma.session.findUnique({
-    where: { id: cookie },
-    include: { user: true },
-  })
+  const session = await getSessionUser(cookie)
 
-  if (!session || session.expiresAt < new Date()) {
-    return NextResponse.json({ user: null }, { status: 401 })
-  }
+  if (!session) return NextResponse.json({ user: null }, { status: 401 })
 
   return NextResponse.json({ user: session.user })
 }

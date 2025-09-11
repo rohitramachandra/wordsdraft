@@ -12,6 +12,7 @@ import { LanguageProvider } from '@/contexts/language-context'
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { COOKIE } from '@/nextConstants'
+import prisma from '@/utils/db'
 
 const anekDevanagari = Anek_Devanagari({
   subsets: ['devanagari', 'latin'],

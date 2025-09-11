@@ -27,11 +27,17 @@ export async function createSession(userId: string, ip?: string, ua?: string) {
   return { id, expiresAt }
 }
 
-export async function getSession(sessionId: string) {
+export async function getSessionUser(sessionId: string) {
   if (sessionId) {
     const session = await prisma.session.findUnique({
       where: { id: sessionId },
+      include: { user: true },
     })
+
+    if (!session || session.expiresAt < new Date()) {
+      return null
+    }
+
     return session
   }
 }

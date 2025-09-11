@@ -21,3 +21,9 @@ export async function sendEmail(to: string, text: string, subject?: string) {
     text,
   })
 }
+
+export async function sendEmailWithHtml(
+  to: string,
+  text: string,
+  subject?: string
+) {}

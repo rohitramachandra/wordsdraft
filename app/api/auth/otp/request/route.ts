@@ -2,7 +2,7 @@ import { issueOTP } from '@/services/auth/otp.service'
 import { rateLimit } from '@/utils/rateLimit'
 import { z } from 'zod'
 import { sendEmail } from '@/utils/email'
-import { userAlreadyExists } from '@/services/auth/user.service'
+import { checkUserExists } from '@/services/auth/user.service'
 
 export async function POST(req: Request) {
   const { email } = z
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   await rateLimit(`otp:req:${email}`, 5, 300)
 
-  const userExists = await userAlreadyExists(email)
+  const userExists = await checkUserExists(email)
 
   if (userExists)
     return Response.json({ message: 'User already exists' }, { status: 400 })
