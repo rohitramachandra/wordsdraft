@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 interface OtpModalProps {
   isOpen: boolean
   onClose: () => void
-  onVerify: (otp: string) => void
+  onVerify: (otp: string) => Promise<boolean>
   type: 'email' | 'phone' | 'both'
   contact: string
 }
@@ -28,6 +28,7 @@ export function OtpModal({
   const { t, getLanguageFont } = useLanguage()
   const [otp, setOtp] = useState(['', '', '', ''])
   const [isVerified, setIsVerified] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   useEffect(() => {
@@ -54,14 +55,28 @@ export function OtpModal({
     }
   }
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const otpString = otp.join('')
     if (otpString.length === 4) {
-      setIsVerified(true)
-      setTimeout(() => {
-        onVerify(otpString)
-        handleClose()
-      }, 1500)
+      setIsLoading(true)
+
+      try {
+        // let parent handle actual API verification
+        const success = await onVerify(otpString)
+
+        if (success) {
+          setIsVerified(true)
+          setTimeout(() => {
+            handleClose()
+          }, 1500) // give user a moment to see success animation
+        } else {
+          // reset and maybe show error
+          setOtp(['', '', '', ''])
+          inputRefs.current[0]?.focus()
+        }
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
@@ -80,15 +95,6 @@ export function OtpModal({
         : t.phoneVerified
     }
     return t.otpSent
-  }
-
-  const getSubtitle = () => {
-    if (isVerified) return ''
-    return type === 'email'
-      ? t.otpSentEmail
-      : type === 'phone'
-      ? t.otpSentPhone
-      : t.otpSent
   }
 
   return (
@@ -130,9 +136,14 @@ export function OtpModal({
 
           {isVerified ? (
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
                 <Check className="h-8 w-8 text-green-600" />
-              </div>
+              </motion.div>
             </div>
           ) : (
             <>
@@ -140,7 +151,9 @@ export function OtpModal({
                 {otp.map((digit, index) => (
                   <Input
                     key={index}
-                    ref={(el) => (inputRefs.current[index] = el)}
+                    ref={(el) => {
+                      inputRefs.current[index] = el
+                    }}
                     type="text"
                     inputMode="numeric"
                     maxLength={1}
@@ -152,26 +165,19 @@ export function OtpModal({
                 ))}
               </div>
 
-              <div
-                className={cn('flex justify-end', getLanguageFont(t.resendOTP))}
-              >
-                <button className="group text-uiacc hover:text-uiacchl dark:hover:text-uiacchl text-sm px-4 py-2 flex gap-1 items-center">
-                  <RotateCcw
-                    size={14}
-                    className="group-hover:-rotate-360 transition-transform duration-300"
-                  />
-                  {t.resendOTP}
-                </button>
-              </div>
               <Button
                 onClick={handleVerify}
-                disabled={otp.join('').length !== 4}
+                disabled={otp.join('').length !== 4 || isLoading}
                 className={cn(
                   'w-full bg-uiacc hover:bg-uiacchl text-white h-12',
                   getLanguageFont(t.verify)
                 )}
               >
-                {t.verify}
+                {isLoading ? (
+                  <motion.div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  t.verify
+                )}
               </Button>
             </>
           )}

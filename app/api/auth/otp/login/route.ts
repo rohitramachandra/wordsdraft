@@ -1,7 +1,7 @@
 import { issueOTP } from '@/services/auth/otp.service'
 import { rateLimit } from '@/utils/rateLimit'
 import { z } from 'zod'
-import { sendEmail } from '@/utils/email'
+import { sendHTMLMail } from '@/services/email/email.service'
 
 export async function POST(req: Request) {
   const { email } = z
@@ -17,6 +17,11 @@ export async function POST(req: Request) {
   )
 
   // Never log or return the code; send via email/SMS provider.
-  await sendEmail(email, `Your login code: ${code}. Expires in 5 minutes.`)
+  await sendHTMLMail({
+    to: email,
+    subject: 'OTP for WordsMyth login',
+    template: 'login',
+    data: { otp: code },
+  })
   return Response.json({ ok: true, expiresAt })
 }

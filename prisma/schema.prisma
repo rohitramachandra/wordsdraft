@@ -15,9 +15,11 @@ model User {
   about      String    @default("")
   dImage     String    @default("")
   bImage     String    @default("")
-  profession String    @default("")
+  passion    String    @default("")
   occupation String    @default("")
   language   String    @default("")
+  district   String    @default("")
+  state      String    @default("")
   passkeys   Passkey[]
   sessions   Session[]
   createdAt  DateTime  @default(now())

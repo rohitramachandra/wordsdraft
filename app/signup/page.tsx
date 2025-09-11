@@ -66,6 +66,8 @@ export default function SignupPage() {
     if (success) {
       router.push('/')
     }
+
+    return success
   }
 
   return (

@@ -80,6 +80,8 @@ export default function LoginPage() {
     if (success) {
       router.push('/')
     }
+
+    return success
   }
 
   return (
