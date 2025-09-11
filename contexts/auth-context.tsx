@@ -112,7 +112,13 @@ export function AuthProvider({
 
     if (verifyOTP.ok) {
       const { user } = await verifyOTP.json()
-      if (setupkey) await setupPasskey(email, user.id)
+      if (setupkey) {
+        try {
+          await setupPasskey(email, user.id)
+        } catch (err) {
+          console.error('Pass key setup failed')
+        }
+      }
       setUser(user)
       setIsLoading(false)
       return true
