@@ -105,8 +105,26 @@ export default function LoginPage() {
 
       <div className="flex items-center w-full h-full max-w-5xl rounded overflow-hidden border-2 border-white dark:border-slate-800 p-1 shadow-sm bg-gradient-to-r from-uibgf/25 to-uibgf dark:from-slate-900/25 dark:to-slate-900">
         <div className="hidden md:block h-auto w-full rounded-l overflow-hidden relative">
-          <div className="absolute w-full h-full flex items-center justify-center"></div>
-          <img src="/login.png" alt="" className="h-full object-cover" />
+          <div className="absolute flex items-center gap-2 pl-4 pt-4">
+            <img
+              src="Vector.png"
+              alt="logo"
+              className="aspect-square w-8 object-contain"
+            />
+            <h2
+              className={cn(
+                'font-black text-4xl text-uiacc',
+                getLanguageFont(t.siteName)
+              )}
+            >
+              {t.siteName}
+            </h2>
+          </div>
+          <img
+            src="/login.png"
+            alt=""
+            className="h-full object-cover dark:mix-blend-soft-light"
+          />
         </div>
         <div className="rounded p-2 md:p-8 w-full max-w-md">
           <div className="text-center mb-8">

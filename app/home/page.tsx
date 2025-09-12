@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { useAuth } from "@/contexts/auth-context";
-import { useLanguage } from "@/contexts/language-context";
-import { translations } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
-import { getLanguageFontClass } from "@/lib/font-utils";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LanguageSelector } from "@/components/language-selector";
+import { useAuth } from '@/contexts/auth-context'
+import { useLanguage } from '@/contexts/language-context'
+import { translations } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
+import { getLanguageFontClass } from '@/lib/font-utils'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { LanguageSelector } from '@/components/language-selector'
 import {
   Home,
   FileText,
@@ -25,80 +25,80 @@ import {
   Download,
   Bell,
   Settings,
-} from "lucide-react";
-import { useState } from "react";
+} from 'lucide-react'
+import { useState } from 'react'
 
 const sidebarItems = [
-  { icon: Home, label: "Home", active: true },
-  { icon: FileText, label: "Posts" },
-  { icon: Users, label: "Friends" },
-  { icon: MessageCircle, label: "Messages" },
-  { icon: FolderOpen, label: "Projects" },
-  { icon: Calendar, label: "Events" },
-  { icon: BookOpen, label: "Blog Posts" },
-];
+  { icon: Home, label: 'Home', active: true },
+  { icon: FileText, label: 'Posts' },
+  { icon: Users, label: 'Friends' },
+  { icon: MessageCircle, label: 'Messages' },
+  { icon: FolderOpen, label: 'Projects' },
+  { icon: Calendar, label: 'Events' },
+  { icon: BookOpen, label: 'Blog Posts' },
+]
 
 const topCreators = [
   {
-    name: "Liza Doe",
-    followers: "1.2k followers",
-    avatar: "/placeholder.svg?height=32&width=32",
+    name: 'Liza Doe',
+    followers: '1.2k followers',
+    avatar: '/placeholder.svg?height=32&width=32',
   },
   {
-    name: "Liza Doe",
-    followers: "1.2k followers",
-    avatar: "/placeholder.svg?height=32&width=32",
+    name: 'Liza Doe',
+    followers: '1.2k followers',
+    avatar: '/placeholder.svg?height=32&width=32',
   },
   {
-    name: "MAYTO",
-    followers: "1.2k followers",
-    avatar: "/placeholder.svg?height=32&width=32",
+    name: 'MAYTO',
+    followers: '1.2k followers',
+    avatar: '/placeholder.svg?height=32&width=32',
   },
   {
-    name: "MAYTO",
-    followers: "1.2k followers",
-    avatar: "/placeholder.svg?height=32&width=32",
+    name: 'MAYTO',
+    followers: '1.2k followers',
+    avatar: '/placeholder.svg?height=32&width=32',
   },
-];
+]
 
 const posts = [
   {
     id: 1,
-    author: "Tenzil Makhar",
-    avatar: "/placeholder.svg?height=40&width=40",
-    time: "2 hours ago",
+    author: 'Tenzil Makhar',
+    avatar: '/placeholder.svg?height=40&width=40',
+    time: '2 hours ago',
     content:
-      "Here comes a creative Facebook Post to write a script at an Elephant How to write a script at a beginner.",
-    image: "/placeholder.svg?height=200&width=300",
+      'Here comes a creative Facebook Post to write a script at an Elephant How to write a script at a beginner.',
+    image: '/placeholder.svg?height=200&width=300',
     likes: 42,
     comments: 8,
     shares: 3,
   },
   {
     id: 2,
-    author: "Tenzil Makhar",
-    avatar: "/placeholder.svg?height=40&width=40",
-    time: "4 hours ago",
-    content: "Question Question Question Question Question Question Question ?",
+    author: 'Tenzil Makhar',
+    avatar: '/placeholder.svg?height=40&width=40',
+    time: '4 hours ago',
+    content: 'Question Question Question Question Question Question Question ?',
     poll: {
       question: "What's your favorite programming language?",
       options: [
-        { text: "JavaScript", votes: 45, percentage: 45 },
-        { text: "Python", votes: 35, percentage: 35 },
-        { text: "Java", votes: 20, percentage: 20 },
+        { text: 'JavaScript', votes: 45, percentage: 45 },
+        { text: 'Python', votes: 35, percentage: 35 },
+        { text: 'Java', votes: 20, percentage: 20 },
       ],
     },
     likes: 28,
     comments: 12,
     shares: 5,
   },
-];
+]
 
 export default function HomePage() {
-  const { user, logout } = useAuth();
-  const { language } = useLanguage();
-  const t = translations[language];
-  const [newPost, setNewPost] = useState("");
+  const { user, logout } = useAuth()
+  const { language } = useLanguage()
+  const t = translations[language]
+  const [newPost, setNewPost] = useState('')
 
   if (!user) {
     return (
@@ -110,12 +110,12 @@ export default function HomePage() {
           </Button>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
     <div
-      className={cn("min-h-screen bg-gray-50", getLanguageFontClass(language))}
+      className={cn('min-h-screen bg-gray-50', getLanguageFontClass(language))}
     >
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -152,7 +152,9 @@ export default function HomePage() {
                 <Settings className="h-5 w-5" />
               </Button>
               <Avatar>
-                <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                <AvatarImage
+                  src={user.dImage ?? '/placeholder.svg?height=32&width=32'}
+                />
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
@@ -170,10 +172,10 @@ export default function HomePage() {
                   <button
                     key={index}
                     className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2 rounded text-left transition-colors",
+                      'w-full flex items-center gap-3 px-3 py-2 rounded text-left transition-colors',
                       item.active
-                        ? "bg-teal-50 text-teal-700 border-l-4 border-teal-600"
-                        : "text-gray-600 hover:bg-gray-50",
+                        ? 'bg-teal-50 text-teal-700 border-l-4 border-teal-600'
+                        : 'text-gray-600 hover:bg-gray-50'
                     )}
                   >
                     <item.icon className="h-5 w-5" />
@@ -234,7 +236,7 @@ export default function HomePage() {
                 <Card key={post.id} className="p-6">
                   <div className="flex items-start gap-3">
                     <Avatar>
-                      <AvatarImage src={post.avatar || "/placeholder.svg"} />
+                      <AvatarImage src={post.avatar || '/placeholder.svg'} />
                       <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -255,7 +257,7 @@ export default function HomePage() {
                       {post.image && (
                         <div className="mb-4">
                           <img
-                            src={post.image || "/placeholder.svg"}
+                            src={post.image || '/placeholder.svg'}
                             alt="Post content"
                             className="w-full rounded max-h-80 object-cover"
                           />
@@ -335,7 +337,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-3">
                       <Avatar className="h-8 w-8">
                         <AvatarImage
-                          src={creator.avatar || "/placeholder.svg"}
+                          src={creator.avatar || '/placeholder.svg'}
                         />
                         <AvatarFallback>
                           {creator.name.charAt(0)}
@@ -385,5 +387,5 @@ export default function HomePage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

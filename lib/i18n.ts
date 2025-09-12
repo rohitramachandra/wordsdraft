@@ -19,6 +19,8 @@ export const translations = {
     setPasskey: 'Set Passkey',
     next: 'Next',
     complete: 'Complete',
+    gender: 'Gender',
+    dob: 'Date of birth',
 
     // Form fields
     enterName: 'Enter your Name',
@@ -81,6 +83,9 @@ export const translations = {
       yourPhoto: 'Your Photo',
       yourPhotoQuestion: 'Add your photo',
       yourPhotoDetails: 'A picture helps others recognize you.',
+      uploadPhoto: 'Upload Photo',
+      changePhoto: 'Change Photo',
+      chooseAvatar: 'Or choose an avatar',
     },
   },
   kn: {
@@ -101,6 +106,8 @@ export const translations = {
     setPasskey: 'ಪಾಸ್‌ಕೀ ಹೊಂದಿಸಿ',
     next: 'ಮುಂದೆ',
     complete: 'ಪೂರ್ಣಗೊಳಿಸಿ',
+    gender: 'ಲಿಂಗ',
+    dob: 'ಹುಟ್ಟಿದ ದಿನಾಂಕ',
 
     // Form fields
     enterName: 'ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ',
@@ -164,6 +171,9 @@ export const translations = {
       yourPhotoQuestion: 'ನಿಮ್ಮ ಫೋಟೋ ಸೇರಿಸಿ',
       yourPhotoDetails:
         'ಒಂದು ಚಿತ್ರವು ಇತರರು ನಿಮ್ಮನ್ನು ಗುರುತಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.',
+      uploadPhoto: 'ಫೋಟೋ ಅಪ್ಲೋಡ್ ಮಾಡಿ',
+      changePhoto: 'ಫೋಟೋ ಬದಲಾಯಿಸಿ',
+      chooseAvatar: 'ಅಥವಾ ಅವತಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ',
     },
   },
   te: {
@@ -184,6 +194,8 @@ export const translations = {
     setPasskey: 'పాస్‌కీని సెట్ చేయండి',
     next: 'తదుపరి',
     complete: 'పూర్తి చేయండి',
+    gender: 'లింగం',
+    dob: 'పుట్టిన తేదీ',
 
     // Placeholders
     fullNamePlaceholder: 'పూర్తి పేరు',
@@ -247,6 +259,9 @@ export const translations = {
       yourPhotoQuestion: 'మీ ఫోటోను జోడించండి',
       yourPhotoDetails:
         'ఒక చిత్రం ఇతరులు మిమ్మల్ని గుర్తించడానికి సహాయపడుతుంది.',
+      uploadPhoto: 'ఫోటో అప్‌లోడ్ చేయండి',
+      changePhoto: 'ఫోటో మార్చండి',
+      chooseAvatar: 'లేదా ఒక అవతార్‌ని ఎంచుకోండి',
     },
   },
   hi: {
@@ -267,6 +282,8 @@ export const translations = {
     setPasskey: 'पासकी सेट करें',
     next: 'अगला',
     complete: 'पूरा करें',
+    gender: 'लिंग',
+    dob: 'जन्म तिथि',
 
     // Form fields
     enterName: 'अपना नाम दर्ज करें',
@@ -329,6 +346,9 @@ export const translations = {
       yourPhoto: 'आपकी तस्वीर',
       yourPhotoQuestion: 'अपनी तस्वीर जोड़ें',
       yourPhotoDetails: 'एक तस्वीर दूसरों को आपको पहचानने में मदद करती है।',
+      uploadPhoto: 'फोटो अपलोड करें',
+      changePhoto: 'फोटो बदलें',
+      chooseAvatar: 'या एक अवतार चुनें',
     },
   },
 }

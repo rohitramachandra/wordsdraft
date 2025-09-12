@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { AnimatePresence } from 'motion/react'
 import { AlertCircle, SunMoon } from 'lucide-react'
+import axios from 'axios'
 
 export default function SignupPage() {
   const { signup, isLoading, user } = useAuth()
@@ -35,24 +36,30 @@ export default function SignupPage() {
   }
 
   async function requestOtp(email: string) {
-    const response = await fetch('/api/auth/otp/request', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-    })
-
-    return response
+    try {
+      const response = await axios.post('/api/auth/otp/request', { email })
+      return response
+    } catch (error) {
+      throw error
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    const response = await requestOtp(formData.email)
-    if (response.ok) setShowOtpModal(true)
-    else {
-      const data = await response.json()
-      setError(data.message)
+
+    try {
+      await requestOtp(formData.email)
+      setShowOtpModal(true)
+    } catch (error: any) {
+      if (error.response) {
+        setError(error.response.data?.message || 'Something went wrong')
+      } else {
+        setError('Network error, please try again')
+      }
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleOtpVerify = async (otp: string) => {
@@ -64,14 +71,17 @@ export default function SignupPage() {
     )
 
     if (success) {
-      router.push('/')
+      router.push('/onboarding')
     }
 
     return success
   }
 
   useEffect(() => {
-    if (user) router.push('/')
+    if (user) {
+      if (user.onboardAt) router.push('/')
+      else router.push('/onboarding')
+    }
   }, [user])
 
   if (user) return null
@@ -92,6 +102,21 @@ export default function SignupPage() {
 
       <div className="flex items-center w-full h-full max-w-5xl rounded overflow-hidden border-2 border-white dark:border-slate-800 p-1 shadow-sm bg-gradient-to-r from-uibgf/25 to-uibgf dark:from-slate-900/25 dark:to-slate-900">
         <div className="hidden md:block h-auto w-full rounded-l overflow-hidden relative">
+          <div className="absolute flex items-center gap-2 pl-4 pt-4">
+            <img
+              src="Vector.png"
+              alt="logo"
+              className="aspect-square w-8 object-contain"
+            />
+            <h2
+              className={cn(
+                'font-black text-4xl text-uiacc',
+                getLanguageFont(t.siteName)
+              )}
+            >
+              {t.siteName}
+            </h2>
+          </div>
           <div className="absolute w-full h-full flex items-center justify-center">
             <div className="-ml-42 mt-6 w-42">
               <h1
@@ -112,7 +137,11 @@ export default function SignupPage() {
               </p>
             </div>
           </div>
-          <img src="/signup.png" alt="" className="h-full object-cover" />
+          <img
+            src="/signup.png"
+            alt=""
+            className="h-full object-cover dark:mix-blend-soft-light"
+          />
         </div>
         <div className="bg-transparent dark:bg-transparent rounded-r p-2 md:p-8 w-full max-w-md">
           <div className="text-center mb-4">

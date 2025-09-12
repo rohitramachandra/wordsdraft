@@ -1,15 +1,7 @@
-import { cookies } from 'next/headers'
-import { COOKIE } from '@/nextConstants'
-import { redirect } from 'next/navigation'
 import SignupPage from './SignUpComponent'
-import { getSessionUser } from '@/services/auth/session.service'
+import { guardLoggedIn } from '@/lib/guards'
 
 export default async function SignUp() {
-  const cookie = (await cookies()).get(COOKIE)?.value
-  if (cookie) {
-    const session = await getSessionUser(cookie)
-    if (session) redirect('/')
-  }
-
+  await guardLoggedIn()
   return <SignupPage />
 }

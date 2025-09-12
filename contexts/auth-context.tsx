@@ -2,6 +2,7 @@
 
 import { loginWithPasskey, setupPasskey } from '@/lib/passkey.auth'
 import { User } from '@prisma/client'
+import axios from 'axios'
 import {
   createContext,
   useContext,
@@ -41,11 +42,10 @@ export function AuthProvider({
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch('/api/auth/me')
-      if (res.ok) {
-        const data = await res.json()
-        setUser(data.user)
-      } else {
+      try {
+        const res = await axios.get('/api/auth/me')
+        setUser(res.data.user)
+      } catch (error) {
         setUser(null)
       }
     }
@@ -81,20 +81,19 @@ export function AuthProvider({
   ): Promise<boolean> => {
     setIsLoading(true)
 
-    const verifyOTP = await fetch('/api/auth/otp/login-verify', {
-      method: 'POST',
-      body: JSON.stringify({ email, code }),
-    })
-
-    if (verifyOTP.ok) {
-      const { user } = await verifyOTP.json()
+    try {
+      const res = await axios.post('/api/auth/otp/login-verify', {
+        email,
+        code,
+      })
+      const { user } = res.data
       setUser(user)
-      setIsLoading(false)
       return true
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
-    return false
   }
 
   const signup = async (
@@ -105,13 +104,14 @@ export function AuthProvider({
   ): Promise<boolean> => {
     setIsLoading(true)
 
-    const verifyOTP = await fetch('/api/auth/otp/verify', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, code }),
-    })
+    try {
+      const res = await axios.post('/api/auth/otp/verify', {
+        name,
+        email,
+        code,
+      })
+      const { user } = res.data
 
-    if (verifyOTP.ok) {
-      const { user } = await verifyOTP.json()
       if (setupkey) {
         try {
           await setupPasskey(email, user.id)
@@ -119,20 +119,24 @@ export function AuthProvider({
           console.error('Pass key setup failed')
         }
       }
-      setUser(user)
-      setIsLoading(false)
-      return true
-    }
 
-    setIsLoading(false)
-    return false
+      setUser(user)
+      return true
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const logout = async () => {
-    await fetch('/api/auth/logout', {
-      method: 'POST',
-    })
-    setUser(null)
+    try {
+      await axios.post('/api/auth/logout')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    } finally {
+      setUser(null)
+    }
   }
 
   return (

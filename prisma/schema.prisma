@@ -7,22 +7,38 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Language {
+  ENGLISH
+  HINDI
+  KANNADA
+  TELUGU
+}
+
 model User {
   id         String    @id @default(cuid())
   email      String    @unique
-  name       String    @default("")
+  name       String
   penName    String    @unique
-  about      String    @default("")
-  dImage     String    @default("")
-  bImage     String    @default("")
-  passion    String    @default("")
-  occupation String    @default("")
-  language   String    @default("")
-  district   String    @default("")
-  state      String    @default("")
+  about      String?
+  dImage     String?
+  bImage     String?
+  gender     Gender?
+  dob        DateTime?
+  passion    String?
+  occupation String?
+  language   Language?
+  district   String?
+  state      String?
   passkeys   Passkey[]
   sessions   Session[]
   createdAt  DateTime  @default(now())
+  onboardAt  DateTime?
 }
 
 model Passkey {
