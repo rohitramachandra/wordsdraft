@@ -144,6 +144,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* WordsMyth Specific styles */
+  --wordwise-shadow: 0 1px 3px rgba(16, 24, 32, 0.06);
+  --wordwise-max-width: 1240px;
 }
 
 .dark {
@@ -186,7 +190,23 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    /* Added WordWise specific body styles */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Added responsive mobile styles */
+  @media (max-width: 920px) {
+    body {
+      height: auto;
+      overflow: visible;
+      display: block;
+    }
   }
 }
 
@@ -208,4 +228,25 @@
 
 button {
   cursor: pointer;
+}
+
+/* Added WordWise specific utility classes */
+@layer utilities {
+  .wordwise-shadow {
+    box-shadow: var(--wordwise-shadow);
+  }
+
+  .wordwise-container {
+    max-width: var(--wordwise-max-width);
+    width: 100%;
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
