@@ -37,7 +37,7 @@ export function PostComposer() {
 
   return (
     <section
-      className="bg-uibgf border border-white rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 wordwise-shadow"
       aria-label="Create Post"
     >
       <div className="flex gap-3 items-start">
@@ -54,8 +54,8 @@ export function PostComposer() {
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Share your thoughts..."
-            className="min-h-[42px] resize-none border-[#e9efee] bg-card text-sm leading-relaxed focus-visible:ring-1 focus-visible:ring-primary"
-            rows={1}
+            className="min-h-32 resize-none dark:bg-slate-950/50 border-[#e9efee] dark:border-gray-800 bg-card text-sm leading-relaxed focus-visible:ring-1 focus-visible:ring-uiacc rounded"
+            rows={4}
           />
 
           <div className="flex items-center justify-between gap-3">
@@ -105,10 +105,8 @@ export function PostComposer() {
               onClick={handleSubmit}
               disabled={!isPostEnabled}
               className={cn(
-                'px-4 py-1.5 text-xs lg:text-sm font-semibold rounded-md transition-colors',
-                isPostEnabled
-                  ? 'bg-[#053d36] hover:bg-[#042d28] text-white'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed'
+                'px-4 py-1.5 text-xs lg:text-sm font-semibold rounded transition-colors',
+                isPostEnabled && 'bg-uiacc hover:bg-uiacchl text-white'
               )}
               size="sm"
             >

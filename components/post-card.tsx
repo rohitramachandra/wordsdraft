@@ -29,7 +29,7 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <article
-      className="bg-uibgf border border-white rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 wordwise-shadow"
       aria-label="Post"
     >
       <div className="flex gap-3 items-start mb-3">
@@ -41,7 +41,7 @@ export function PostCard({ post }: PostCardProps) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1 flex-wrap text-sm">
-            <span className="font-semibold text-[#0f2b2a]">
+            <span className="font-semibold text-black dark:text-white">
               {post.author.name}
             </span>
             <span className="text-muted-foreground">·</span>

@@ -67,9 +67,23 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-hide">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme') ||
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                document.body.classList.toggle('dark', theme === 'dark');
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
-        className={`font-sans antialiased ${anekLatin.variable} ${anekDevanagari.variable} ${anekKannada.variable} ${anekTelugu.variable}`}
+        className={`scrollbar-hide font-sans antialiased ${anekLatin.variable} ${anekDevanagari.variable} ${anekKannada.variable} ${anekTelugu.variable}`}
       >
         <Suspense fallback={null}>
           <LanguageProvider>

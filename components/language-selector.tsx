@@ -29,7 +29,7 @@ export function LanguageSelector() {
         <Button
           variant="outline"
           size="sm"
-          className="dark:bg-slate-950 bg-uibgf text-black dark:text-white border-2 border-gray-500/25 hover:bg-black/25 dark:hover:bg-white/25 transition-colors rounded py-0 h-8 min-w-24"
+          className="dark:bg-slate-950 bg-uibgf text-black dark:text-white border-2 border-gray-500/25 hover:bg-uibg dark:hover:bg-slate-900 transition-colors rounded py-0 h-8 min-w-24"
         >
           <Globe className="h-4 w-4" />
           <span className={cn(currentLang?.fontClass)}>

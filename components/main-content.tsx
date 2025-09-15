@@ -5,7 +5,7 @@ import { FeedPosts } from '@/components/feed-posts'
 
 export function MainContent() {
   return (
-    <main className="h-full overflow-y-scroll scrollbar-hide" role="main">
+    <main className="" role="main">
       <div className="space-y-4 lg:space-y-5">
         {/* Profile Banner Image */}
         <div

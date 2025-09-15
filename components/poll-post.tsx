@@ -33,7 +33,7 @@ interface PollPostProps {
 export function PollPost({ post }: PollPostProps) {
   return (
     <article
-      className="bg-uibgf border border-white rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 wordwise-shadow"
       aria-label="Poll Post"
     >
       <div className="flex gap-3 items-start mb-3">
@@ -45,7 +45,7 @@ export function PollPost({ post }: PollPostProps) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1 flex-wrap text-sm">
-            <span className="font-semibold text-[#0f2b2a]">
+            <span className="font-semibold text-black dark:text-white">
               {post.author.name}
             </span>
             <span className="text-muted-foreground">·</span>
@@ -67,9 +67,9 @@ export function PollPost({ post }: PollPostProps) {
         {post.poll.options.map((option, index) => (
           <div key={index} className="text-sm">
             <div className="mb-1.5">{option.text}</div>
-            <div className="w-full h-4 bg-[#e9efee] rounded-full overflow-hidden">
+            <div className="w-full h-8 bg-[#e9efee] dark:bg-slate-800 rounded overflow-hidden">
               <div
-                className="h-full bg-[#053d36] flex items-center justify-end pr-2 text-white text-xs leading-4"
+                className="h-full bg-uiacc flex items-center justify-end py-2 pr-2 text-white text-xs"
                 style={{ width: `${option.percentage}%` }}
               >
                 {option.percentage}%

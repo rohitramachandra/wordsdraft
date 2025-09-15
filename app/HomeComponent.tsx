@@ -15,47 +15,61 @@ import { ProfileBanner } from '@/components/profile-banner'
 import { FeedTabs } from '@/components/feed-tabs'
 
 export default function HomePage() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const { language } = useLanguage()
   const t = translations[language]
 
   const router = useRouter()
 
-  // Redirect to login if user is not logged in
   useEffect(() => {
-    if (!user) {
-      router.push('/login')
-    }
-
-    // If user onboarding not complete reroute to onboarding
-    if (!user?.onboardAt) router.push('/onboarding')
+    if (!user) router.push('/login')
+    else if (!user?.onboardAt) router.push('/onboarding')
   }, [user, router])
 
-  if (!user) {
-    return null
-  }
+  if (!user) return null
 
   return (
     <div
       className={cn(
-        'h-[100dvh] overflow-hidden bg-uibg',
+        'bg-uibg dark:bg-slate-950 min-h-screen',
         getLanguageFontClass(language)
       )}
     >
-      <Header />
-      <div className="wordwise-container pt-20 px-3 pb-3 lg:px-4 lg:pb-4 max-w-7xl overflow-x-hidden mx-auto grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-4 lg:gap-6 align-start flex-grow min-h-0 h-full">
-        <LeftSidebar />
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-50 bg-uibg">
+        <Header />
+      </div>
 
-        <div className="main-content-area flex flex-col gap-4 lg:gap-5 min-h-0 h-full">
-          {/* Fixed top section with profile banner and tabs */}
-          <div className="content-top-section flex flex-col gap-3 lg:gap-4 flex-shrink-0">
-            <ProfileBanner />
-            <FeedTabs />
+      <div className="h-20"></div>
+      <div className="wordwise-container max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[240px_1fr]">
+        {/* Sidebar (sticky) */}
+        <div className="hidden lg:block sticky top-16 self-start h-[calc(100vh-4rem)] overflow-hidden">
+          <LeftSidebar />
+        </div>
+
+        {/* Main content area */}
+        <div className="flex flex-col gap-6 min-h-0">
+          {/* Full-width top section spanning main+right */}
+          <div className="sticky top-16 self-start z-40 bg-uibg/75 dark:bg-slate-950/85 backdrop-blur-sm pt-4 pb-2 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-6">
+              <div className="lg:col-span-2 flex flex-col gap-4">
+                {!user.onboardAt && <ProfileBanner />}
+                <FeedTabs />
+              </div>
+            </div>
           </div>
-          {/* Bottom section with feed and right sidebar side by side */}
-          <div className="content-bottom-section grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-6 align-start flex-grow min-h-0 h-full overflow-hidden">
-            <MainContent />
-            <RightSidebar />
+
+          {/* Bottom grid: main + right sidebar */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-6 flex-1 min-h-0">
+            {/* Main feed scrolls indefinitely */}
+            <div className="min-h-0 overflow-y-auto">
+              <MainContent />
+            </div>
+
+            {/* Right sidebar scrolls only within viewport */}
+            <div className="sticky top-32 self-start max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <RightSidebar />
+            </div>
           </div>
         </div>
       </div>

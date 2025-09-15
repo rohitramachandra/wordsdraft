@@ -22,7 +22,7 @@ const trendingItems = [
 
 export function TrendingContent() {
   return (
-    <div className="bg-uibgf border border-white rounded p-3 wordwise-shadow">
+    <div className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 wordwise-shadow">
       <div className="flex justify-between items-center mb-3">
         <div className="font-semibold text-sm">Trending on WordWise</div>
         <div className="text-xs text-muted-foreground">Today</div>

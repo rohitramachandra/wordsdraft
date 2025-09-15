@@ -15,6 +15,12 @@ const tabs = [
   { label: 'Fiction', active: false },
   { label: 'International', active: false },
   { label: 'News', active: false },
+  { label: 'News2', active: false },
+  { label: 'News3', active: false },
+  { label: 'News4', active: false },
+  { label: 'News5', active: false },
+  { label: 'News6', active: false },
+  { label: 'News7', active: false },
 ]
 
 export function FeedTabs() {
@@ -25,6 +31,8 @@ export function FeedTabs() {
   const checkScrollability = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+      console.log({ scrollLeft, scrollWidth, clientWidth })
+      console.log(scrollLeft > 0, scrollLeft < scrollWidth - clientWidth - 1)
       setCanScrollLeft(scrollLeft > 0)
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1)
     }
@@ -50,11 +58,11 @@ export function FeedTabs() {
   }
 
   return (
-    <div className="relative flex items-center rounded-md overflow-hidden">
+    <div className="relative w-full flex items-center rounded-md overflow-hidden">
       <button
         onClick={scrollLeft}
         className={cn(
-          'absolute left-0 z-10 flex items-center justify-center pl-2 pr-12 py-2 bg-gradient-to-r from-uibg via-uibg to-transparent rounded-md transition-opacity',
+          'absolute left-0 z-10 flex items-center justify-center pl-2 pr-12 py-2 bg-gradient-to-r from-uibg dark:from-slate-950 via-uibg dark:via-slate-950 to-transparent rounded-md transition-opacity',
           canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         aria-label="Scroll left"
@@ -64,7 +72,7 @@ export function FeedTabs() {
 
       <div
         ref={scrollRef}
-        className="flex gap-2 items-center px-1 overflow-x-auto scrollbar-hide scroll-smooth"
+        className="flex w-full gap-2 items-center px-1 overflow-x-auto scrollbar-hide scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onScroll={checkScrollability}
         aria-label="Feed Tabs"
@@ -73,10 +81,10 @@ export function FeedTabs() {
           <button
             key={tab.label}
             className={cn(
-              'flex-shrink-0 border rounded-md px-3 py-1.5 text-xs lg:text-sm font-medium transition-colors',
+              'flex-shrink-0 border rounded px-3 py-1.5 text-xs lg:text-sm font-medium transition-colors',
               tab.active
-                ? 'bg-uibg border-uiacc text-uiacc font-semibold shadow-sm'
-                : 'bg-uibgf text-foreground border-gray-400 hover:bg-muted'
+                ? 'bg-uibg dark:bg-slate-950 border-uiacc text-uiacc font-semibold shadow-sm'
+                : 'bg-uibgf dark:bg-slate-900 text-foreground border-gray-400 dark:border-gray-800 hover:bg-muted'
             )}
           >
             {tab.label}
@@ -87,7 +95,7 @@ export function FeedTabs() {
       <button
         onClick={scrollRight}
         className={cn(
-          'absolute right-0 z-10 flex items-center justify-center pr-2 pl-12 py-2 bg-gradient-to-r from-transparent via-uibg to-uibg rounded-md transition-opacity',
+          'absolute right-0 z-10 flex items-center justify-center pr-2 pl-12 py-2 bg-gradient-to-r from-transparent via-uibg dark:via-slate-950 to-uibg dark:to-slate-950 rounded-md transition-opacity',
           canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         aria-label="Scroll right"
