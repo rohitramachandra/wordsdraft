@@ -1,94 +1,157 @@
-"use client"
+'use client'
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-
-interface User {
-  id: string
-  name: string
-  email: string
-  phone?: string
-}
+import { loginWithPasskey, setupPasskey } from '@/lib/passkey.auth'
+import { User } from '@prisma/client'
+import axios from 'axios'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from 'react'
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<boolean>
-  signup: (name: string, email: string, phone: string, password: string) => Promise<boolean>
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; otp: boolean }>
+  signup: (
+    name: string,
+    email: string,
+    password: string,
+    setupkey?: boolean
+  ) => Promise<boolean>
   logout: () => void
+  login_confirm: (email: string, code: string) => Promise<boolean>
   isLoading: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Dummy user for testing
-const DUMMY_USER = {
-  id: "1",
-  name: "John Doe",
-  email: "demo@wordwise.com",
-  phone: "+91 9876543210",
-}
-
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+export function AuthProvider({
+  session_user,
+  children,
+}: {
+  session_user: User | null
+  children: ReactNode
+}) {
+  const [user, setUser] = useState<User | null>(session_user)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    // Check for existing session
-    const savedUser = localStorage.getItem("wordwise_user")
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get('/api/auth/me')
+        setUser(res.data.user)
+      } catch (error) {
+        setUser(null)
+      }
     }
-    setIsLoading(false)
+    fetchUser()
   }, [])
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (
+    email: string
+  ): Promise<{ success: boolean; otp: boolean }> => {
     setIsLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const { type, status, user } = await loginWithPasskey(email)
 
-    // Dummy authentication - accept demo@wordwise.com with any password
-    if (email === "demo@wordwise.com" || email === "+91 9876543210") {
-      setUser(DUMMY_USER)
-      localStorage.setItem("wordwise_user", JSON.stringify(DUMMY_USER))
-      setIsLoading(false)
-      return true
+    if (status === 'success') {
+      if (type === 'otp') {
+        setIsLoading(false)
+        return { success: true, otp: true }
+      } else if (type === 'passkey' && user) {
+        setUser(user)
+        setIsLoading(false)
+        return { success: true, otp: false }
+      }
     }
 
-    setIsLoading(false)
-    return false
-  }
-
-  const signup = async (name: string, email: string, phone: string, password: string): Promise<boolean> => {
-    setIsLoading(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    const newUser = {
-      id: Date.now().toString(),
-      name,
-      email,
-      phone,
-    }
-
-    setUser(newUser)
-    localStorage.setItem("wordwise_user", JSON.stringify(newUser))
-    setIsLoading(false)
-    return true
-  }
-
-  const logout = () => {
     setUser(null)
-    localStorage.removeItem("wordwise_user")
+    setIsLoading(false)
+    return { success: false, otp: false }
   }
 
-  return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>
+  const login_confirm = async (
+    email: string,
+    code: string
+  ): Promise<boolean> => {
+    setIsLoading(true)
+
+    try {
+      const res = await axios.post('/api/auth/otp/login-verify', {
+        email,
+        code,
+      })
+      const { user } = res.data
+      setUser(user)
+      return true
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const signup = async (
+    name: string,
+    email: string,
+    code: string,
+    setupkey: boolean = false
+  ): Promise<boolean> => {
+    setIsLoading(true)
+
+    try {
+      const res = await axios.post('/api/auth/otp/verify', {
+        name,
+        email,
+        code,
+      })
+      const { user } = res.data
+
+      if (setupkey) {
+        try {
+          await setupPasskey(email, user.id)
+        } catch (err) {
+          console.error('Pass key setup failed')
+        }
+      }
+
+      setUser(user)
+      return true
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await axios.post('/api/auth/logout')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    } finally {
+      setUser(null)
+    }
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{ user, login, signup, logout, login_confirm, isLoading }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
 }

@@ -1,0 +1,80 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Language {
+  ENGLISH
+  HINDI
+  KANNADA
+  TELUGU
+}
+
+model User {
+  id         String    @id @default(cuid())
+  email      String    @unique
+  name       String
+  penName    String    @unique
+  about      String?
+  dImage     String?
+  bImage     String?
+  gender     Gender?
+  dob        DateTime?
+  passion    String?
+  occupation String?
+  language   Language?
+  district   String?
+  state      String?
+  passkeys   Passkey[]
+  sessions   Session[]
+  createdAt  DateTime  @default(now())
+  onboardAt  DateTime?
+}
+
+model Passkey {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  credentialId String   @unique
+  publicKey    String
+  counter      Int      @default(0)
+  transports   String? // JSON array
+  createdAt    DateTime @default(now())
+}
+
+model OtpCode {
+  id         String    @id @default(cuid())
+  email      String
+  codeHash   String // store hashed code, never plain
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  ip         String?
+  userAgent  String?
+
+  @@index([email])
+  @@index([expiresAt])
+}
+
+model Session {
+  id        String   @id // opaque random ID stored in cookie
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  ip        String?
+  userAgent String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
