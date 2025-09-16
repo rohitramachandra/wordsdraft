@@ -1,5 +1,5 @@
 import { startPasskeyRegistration } from '@/services/auth/passkey.service'
-import { getUserByEmail } from '@/services/auth/user.service'
+import { getUserByEmail } from '@/services/user/user.service'
 import { z } from 'zod'
 
 export async function POST(req: Request) {

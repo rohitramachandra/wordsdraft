@@ -3,10 +3,8 @@
 import {
   Home,
   Users,
-  BookOpen,
   Edit,
-  MessageCircle,
-  Folder,
+  BriefcaseBusiness,
   Calendar,
   Book,
 } from 'lucide-react'
@@ -15,12 +13,10 @@ import { cn } from '@/lib/utils'
 import { motion } from 'motion/react'
 
 const navigationItems = [
-  { icon: Home, label: 'Home', active: true },
+  { icon: Home, label: 'Society', active: true },
   { icon: Users, label: 'Circles', active: false },
-  { icon: BookOpen, label: 'News', active: false },
   { icon: Edit, label: 'Handpost', active: false },
-  { icon: MessageCircle, label: 'Messages', active: false },
-  { icon: Folder, label: 'Projects', active: false },
+  { icon: BriefcaseBusiness, label: 'Jobs', active: false },
   { icon: Calendar, label: 'Events', active: false },
   { icon: Book, label: 'Book Store', active: false },
 ]
@@ -28,7 +24,7 @@ const navigationItems = [
 export function LeftSidebar() {
   return (
     <aside
-      className="fixed z-40 bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 wordwise-shadow h-fit flex flex-col gap-24"
+      className="fixed z-40 bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 h-fit flex flex-col gap-24 shadow-sm"
       aria-label="Main Navigation"
     >
       <nav className="flex-1">

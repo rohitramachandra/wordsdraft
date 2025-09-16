@@ -15,12 +15,6 @@ const tabs = [
   { label: 'Fiction', active: false },
   { label: 'International', active: false },
   { label: 'News', active: false },
-  { label: 'News2', active: false },
-  { label: 'News3', active: false },
-  { label: 'News4', active: false },
-  { label: 'News5', active: false },
-  { label: 'News6', active: false },
-  { label: 'News7', active: false },
 ]
 
 export function FeedTabs() {

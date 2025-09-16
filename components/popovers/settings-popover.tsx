@@ -53,15 +53,16 @@ export function SettingsPopover() {
           )}
         >
           <motion.div
+            initial={{ rotate: 0 }}
             whileHover={
               !open
                 ? {
-                    rotate: [0, -10, 10, -6, 6, 0],
-                    transition: { duration: 0.5 },
+                    rotate: [0, 30, 60, 90],
+                    transition: { duration: 0.3 },
                   }
                 : {}
             }
-            className="px-3"
+            className="px-3 py-2"
           >
             <Settings
               className={cn(
@@ -75,7 +76,7 @@ export function SettingsPopover() {
 
       {/* Popup Content */}
       <PopoverContent
-        className="w-56 p-4 bg-uibg dark:bg-slate-950 border-2 border-uiacc/30 dark:border-gray-800"
+        className="w-56 p-4 rounded bg-uibg dark:bg-slate-950 border-2 border-uiacc/30 dark:border-gray-800"
         align="end"
       >
         <div className="flex flex-col gap-2 text-sm">

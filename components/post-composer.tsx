@@ -6,10 +6,13 @@ import { useState, useRef, useEffect } from 'react'
 import { ImageIcon, BarChart3, Smile, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/contexts/auth-context'
 
 export function PostComposer() {
+  const { user } = useAuth()
+
   const [content, setContent] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -37,13 +40,17 @@ export function PostComposer() {
 
   return (
     <section
-      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 shadow-sm"
       aria-label="Create Post"
     >
       <div className="flex gap-3 items-start">
         <Avatar className="w-9 h-9 lg:w-10 lg:h-10 flex-shrink-0">
+          <AvatarImage
+            src={user?.dImage ?? '/placeholder.svg?height=32&width=32'}
+            alt={user?.name ?? 'User'}
+          />
           <AvatarFallback className="bg-muted text-muted-foreground">
-            U
+            {user?.name[0].toUpperCase()}
           </AvatarFallback>
         </Avatar>
 

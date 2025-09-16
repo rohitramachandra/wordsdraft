@@ -19,7 +19,7 @@ const topCreators = [
 
 export function TopCreators() {
   return (
-    <div className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 wordwise-shadow h-fit">
+    <div className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 h-fit shadow-sm">
       <div className="flex justify-between items-center mb-3">
         <div className="font-semibold text-sm">Top Creators</div>
         <div className="text-xs text-muted-foreground">This week</div>
@@ -44,7 +44,7 @@ export function TopCreators() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs font-semibold px-2.5 py-1 h-auto border-transparent dark:border-transparent hover:border-uiacc dark:hover:border-uiacc hover:text-white bg-transparent text-white dark:bg-transparent hover:bg-uiacchl/25 dark:hover:bg-uiacchl/25 "
+                className="shadow-none text-xs font-semibold px-2.5 py-1 h-auto border-transparent dark:border-transparent hover:border-uiacc dark:hover:border-uiacc hover:text-white bg-transparent text-white dark:bg-transparent hover:bg-uiacchl/25 dark:hover:bg-uiacchl/25 "
               >
                 <UserRoundPlus className="text-black dark:text-white" />
               </Button>

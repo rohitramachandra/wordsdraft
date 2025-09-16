@@ -49,7 +49,7 @@ const PASSIONS = [
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, refreshUser } = useAuth()
   const { t, getLanguageFont, language } = useLanguage()
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -127,19 +127,6 @@ export default function OnboardingPage() {
     setPreviewUrl(avatar)
   }
 
-  // Redirect to home if user is already logged in
-  useEffect(() => {
-    if (!user) {
-      router.push('/login')
-    }
-
-    if (user?.onboardAt) router.push('/')
-  }, [user, router])
-
-  if (!user) {
-    return null
-  }
-
   const handleNextStep = (e: React.FormEvent) => {
     e.preventDefault()
     setDirection(1)
@@ -184,15 +171,26 @@ export default function OnboardingPage() {
         photo: uploadedS3URL ?? selectedAvatar ?? '',
       })
 
-      const data = res.data
-      console.log(data)
+      await refreshUser()
 
-      router.push('/home')
+      router.push('/')
     } catch (err) {
       console.error('Onboarding error:', err)
     } finally {
       setLoading(false)
     }
+  }
+
+  // Redirect to home if user is already logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+    }
+    if (!!user?.onboardAt) router.push('/')
+  }, [user, router])
+
+  if (!user) {
+    return null
   }
 
   const stepComponents = [

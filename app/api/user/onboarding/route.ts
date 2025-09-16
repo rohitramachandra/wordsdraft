@@ -1,6 +1,6 @@
 import { COOKIE } from '@/nextConstants'
 import { getSessionUser } from '@/services/auth/session.service'
-import { updateUserOnboarding } from '@/services/auth/user.service'
+import { completeOnboarding } from '@/services/user/user.service'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -17,22 +17,7 @@ export async function POST(req: Request) {
 
     const body = await req.json()
 
-    // Build the dob properly from day/month/year
-    const dob =
-      body.day && body.month && body.year
-        ? new Date(`${body.year}-${body.month}-${body.day}`)
-        : null
-
-    const updatedUser = await updateUserOnboarding(session.user.email, {
-      gender: body.gender.toUpperCase(),
-      dob: dob,
-      language: body.mindLanguage.toUpperCase(),
-      district: body.district,
-      state: body.state,
-      occupation: body.occupation,
-      passion: body.passion,
-      dImage: body.photo ?? body.selectedAvatar ?? '',
-    })
+    const updatedUser = await completeOnboarding(session.user.email, body)
 
     return NextResponse.json({ user: updatedUser })
   } catch (err) {

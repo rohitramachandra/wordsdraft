@@ -51,7 +51,7 @@ export async function findOrCreateUserByEmail(name: string, email: string) {
   }
 }
 
-export async function updateUserOnboarding(
+async function updateUserOnboarding(
   email: string,
   data: Partial<
     Pick<
@@ -77,6 +77,24 @@ export async function updateUserOnboarding(
     console.error('Error finding or updating a user:', err)
     return null
   }
+}
+
+export async function completeOnboarding(email: string, body: any) {
+  const dob =
+    body.day && body.month && body.year
+      ? new Date(`${body.year}-${body.month}-${body.day}`)
+      : null
+
+  return updateUserOnboarding(email, {
+    gender: body.gender.toUpperCase(),
+    dob,
+    language: body.mindLanguage.toUpperCase(),
+    district: body.district,
+    state: body.state,
+    occupation: body.occupation,
+    passion: body.passion,
+    dImage: body.photo ?? body.selectedAvatar ?? '',
+  })
 }
 
 export async function updateUserDImage(email: string, dImage: string) {

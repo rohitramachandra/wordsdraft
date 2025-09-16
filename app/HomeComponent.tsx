@@ -9,10 +9,10 @@ import { Header } from '@/components/header'
 import { LeftSidebar } from '@/components/left-sidebar'
 import { MainContent } from '@/components/main-content'
 import { RightSidebar } from '@/components/right-sidebar'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { ProfileBanner } from '@/components/profile-banner'
 import { FeedTabs } from '@/components/feed-tabs'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -20,7 +20,6 @@ export default function HomePage() {
   const t = translations[language]
 
   const router = useRouter()
-
   useEffect(() => {
     if (!user) router.push('/login')
     else if (!user?.onboardAt) router.push('/onboarding')
@@ -53,7 +52,7 @@ export default function HomePage() {
           <div className="sticky top-16 self-start z-40 bg-uibg/75 dark:bg-slate-950/85 backdrop-blur-sm pt-4 pb-2 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-6">
               <div className="lg:col-span-2 flex flex-col gap-4">
-                {!user.onboardAt && <ProfileBanner />}
+                {!user?.onboardAt && <ProfileBanner />}
                 <FeedTabs />
               </div>
             </div>

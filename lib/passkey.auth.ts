@@ -39,26 +39,31 @@ export async function loginWithPasskey(email: string) {
       return await loginWithOTP(email)
     }
 
-    // Browser triggers authenticator (FaceID, TouchID, etc.)
-    const assertionResp = await startAuthentication({ optionsJSON: options })
+    try {
+      // Browser triggers authenticator (FaceID, TouchID, etc.)
+      const assertionResp = await startAuthentication({ optionsJSON: options })
 
-    // Send result back to backend
-    const verifyRes = await fetch('/api/auth/passkey/login-finish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, assertionResponse: assertionResp }),
-    })
+      // Send result back to backend
+      const verifyRes = await fetch('/api/auth/passkey/login-finish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, assertionResponse: assertionResp }),
+      })
 
-    if (verifyRes.ok) {
-      console.log('Logged in with passkey')
-      const data = await verifyRes.json()
-      return { type: 'passkey', status: 'success', user: data.user }
-    } else {
-      console.error('Login failed')
-      return { type: 'passkey', status: 'failed', user: null }
+      if (verifyRes.ok) {
+        console.log('Logged in with passkey')
+        const data = await verifyRes.json()
+        return { type: 'passkey', status: 'success', user: data.user }
+      } else {
+        console.error('Login failed')
+        return { type: 'passkey', status: 'failed', user: null }
+      }
+    } catch (err) {
+      // If passkey login fails due to any reason, fallback to OTP
+      return await loginWithOTP(email)
     }
   } catch (err) {
-    console.error('Error occured while trying to login with passkey: ', err)
+    console.error('Error occured while trying to login: ', err)
     return { type: 'passkey', status: 'failed', user: null }
   }
 }

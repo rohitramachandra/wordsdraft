@@ -4,12 +4,12 @@ import { useAuth } from '@/contexts/auth-context'
 import { useLanguage } from '@/contexts/language-context'
 import { translations } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
-import { Search, Bell, Mail, User, Download, Settings } from 'lucide-react'
+import { Search, Bell, MessageSquare, MessageSquareShare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { SettingsPopover } from './settings-popover'
-import { UserPopover } from './user-popover'
+import { SettingsPopover } from './popovers/settings-popover'
+import { UserPopover } from './popovers/user-popover'
+import { motion } from 'motion/react'
 
 export function Header() {
   const { user } = useAuth()
@@ -17,7 +17,7 @@ export function Header() {
   const t = translations[language]
   return (
     <header
-      className="w-full bg-uibgf dark:bg-slate-900 border-b border-white dark:border-gray-800 flex-shrink-0 fixed top-0 z-50"
+      className="w-full bg-uibgf dark:bg-slate-900 border-b border-white dark:border-gray-800 flex-shrink-0 fixed top-0 z-50 shadow-sm"
       role="banner"
     >
       <div className="wordwise-container max-w-7xl mx-auto flex items-center gap-4 p-3 lg:p-4">
@@ -63,6 +63,24 @@ export function Header() {
 
           <Button variant="ghost" size="sm">
             <Bell className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="hover:bg-uibg dark:hover:bg-slate-950 p-0"
+          >
+            <motion.div
+              initial={{ rotate: 0 }}
+              whileHover={{
+                scale: 1.1,
+                rotate: 5,
+                transition: { duration: 0.3 },
+              }}
+              className="relative flex items-center justify-center px-5 py-3.5 group"
+            >
+              <MessageSquare className="absolute opacity-100 group-hover:opacity-0 h-5 w-5" />
+              <MessageSquareShare className="absolute group-hover:opacity-1000 opacity-0 h-5 w-5" />
+            </motion.div>
           </Button>
           <SettingsPopover />
           <UserPopover />

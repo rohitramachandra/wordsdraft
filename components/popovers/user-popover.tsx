@@ -37,7 +37,7 @@ export function UserPopover() {
 
       {/* Popover Content */}
       <PopoverContent
-        className="w-fit p-3 bg-uibgf dark:bg-slate-950 border-2 border-uiacc/30 dark:border-gray-800"
+        className="w-fit p-3 rounded bg-uibg dark:bg-slate-950 border-2 border-uiacc/30 dark:border-gray-800"
         align="end"
       >
         <div className="flex flex-col gap-3 text-sm w-fit">

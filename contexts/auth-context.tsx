@@ -13,6 +13,7 @@ import {
 
 interface AuthContextType {
   user: User | null
+  refreshUser: () => Promise<void>
   login: (
     email: string,
     password: string
@@ -40,17 +41,25 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(session_user)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get('/api/auth/me')
-        setUser(res.data.user)
-      } catch (error) {
-        setUser(null)
-      }
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get('/api/auth/me')
+      setUser(res.data.user)
+    } catch (error) {
+      setUser(null)
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchUser()
   }, [])
+
+  const refreshUser = async () => {
+    setIsLoading(true)
+    await fetchUser()
+  }
 
   const login = async (
     email: string
@@ -141,7 +150,15 @@ export function AuthProvider({
 
   return (
     <AuthContext.Provider
-      value={{ user, login, signup, logout, login_confirm, isLoading }}
+      value={{
+        user,
+        refreshUser,
+        login,
+        signup,
+        logout,
+        login_confirm,
+        isLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -33,7 +33,7 @@ interface PollPostProps {
 export function PollPost({ post }: PollPostProps) {
   return (
     <article
-      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 shadow-sm"
       aria-label="Poll Post"
     >
       <div className="flex gap-3 items-start mb-3">
