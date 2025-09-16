@@ -54,7 +54,7 @@ export function PollPost({ post }: PollPostProps) {
             </span>
           </div>
           <div className="text-xs text-muted-foreground mt-0.5">
-            Posted {post.timeAgo} · Category: {post.category}
+            {post.timeAgo} · {post.category}
           </div>
         </div>
       </div>

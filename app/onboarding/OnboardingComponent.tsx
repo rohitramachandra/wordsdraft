@@ -74,6 +74,7 @@ export default function OnboardingPage() {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null)
   const [uploadedS3URL, setUploadedS3URL] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const avatars = {
     MALE: [
@@ -166,15 +167,16 @@ export default function OnboardingPage() {
     try {
       setLoading(true)
 
-      const res = await axios.post('/api/user/onboarding', {
+      await axios.post('/api/user/onboarding', {
         ...formData,
         photo: uploadedS3URL ?? selectedAvatar ?? '',
       })
 
       await refreshUser()
-
+      setIsSuccess(true)
       router.push('/')
     } catch (err) {
+      setIsSuccess(false)
       console.error('Onboarding error:', err)
     } finally {
       setLoading(false)
@@ -695,7 +697,7 @@ export default function OnboardingPage() {
         <div className="flex flex-col sm:flex-row justify-between gap-2 mt-4">
           <Button
             type="button"
-            disabled={loading}
+            disabled={loading || isSuccess}
             onClick={handlePreviousStep}
             variant="outline"
             className={cn(
@@ -708,7 +710,7 @@ export default function OnboardingPage() {
 
           <Button
             type="submit"
-            disabled={loading}
+            disabled={loading || isSuccess}
             className={cn(
               'flex-1 sm:w-2/3 bg-uiacc hover:bg-uiacchl text-white h-12 rounded font-medium order-1 sm:order-2',
               getLanguageFont(t.complete)

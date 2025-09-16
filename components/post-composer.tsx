@@ -9,19 +9,63 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/contexts/auth-context'
+import { useToast } from '@/hooks/use-toast'
+import axios from 'axios'
+import { usePostsStore } from '@/store/posts.store'
 
 export function PostComposer() {
   const { user } = useAuth()
+  const { addPosts } = usePostsStore()
 
   const [content, setContent] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { toast } = useToast()
 
   const isPostEnabled = content.trim().length > 0
 
-  const handleSubmit = () => {
+  async function uploadPost(files: File[], content: string, category: string) {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Login to add post!',
+        description: 'You need to be logged in to post content.',
+      })
+      return
+    }
+
+    try {
+      const formData = new FormData()
+      formData.append('authorId', user.id)
+      formData.append('content', content)
+      formData.append('category', category)
+      files.forEach((file) => formData.append('media', file))
+
+      const res = await axios.post('/api/post/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      return res.data
+    } catch (err: any) {
+      console.error('Error uploading post:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Failed to upload post',
+        description: err?.response?.data?.error || err.message,
+      })
+    }
+  }
+
+  const handleSubmit = async () => {
     if (!isPostEnabled) return
-    console.log('Post submitted:', content)
+    setLoading(true)
+    const res = await uploadPost([], content, 'GENERAL')
+    addPosts([res.data])
     setContent('')
+    setLoading(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -110,14 +154,14 @@ export function PostComposer() {
 
             <Button
               onClick={handleSubmit}
-              disabled={!isPostEnabled}
+              disabled={!isPostEnabled || loading}
               className={cn(
                 'px-4 py-1.5 text-xs lg:text-sm font-semibold rounded transition-colors',
                 isPostEnabled && 'bg-uiacc hover:bg-uiacchl text-white'
               )}
               size="sm"
             >
-              Post
+              {loading ? 'Posting' : 'Post'}
             </Button>
           </div>
         </div>

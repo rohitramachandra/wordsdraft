@@ -25,8 +25,6 @@ export function FeedTabs() {
   const checkScrollability = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-      console.log({ scrollLeft, scrollWidth, clientWidth })
-      console.log(scrollLeft > 0, scrollLeft < scrollWidth - clientWidth - 1)
       setCanScrollLeft(scrollLeft > 0)
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1)
     }
@@ -52,7 +50,7 @@ export function FeedTabs() {
   }
 
   return (
-    <div className="relative w-full flex items-center rounded-md overflow-hidden">
+    <div className="relative w-full flex items-center rounded-md overflow-hidden px-3 sm:px-0">
       <button
         onClick={scrollLeft}
         className={cn(

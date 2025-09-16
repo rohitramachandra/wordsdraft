@@ -13,6 +13,7 @@ import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { COOKIE } from '@/nextConstants'
 import prisma from '@/utils/db'
+import { Toaster } from '@/components/ui/toaster'
 
 const anekDevanagari = Anek_Devanagari({
   subsets: ['devanagari', 'latin'],
@@ -87,7 +88,10 @@ export default async function RootLayout({
       >
         <Suspense fallback={null}>
           <LanguageProvider>
-            <AuthProvider session_user={user}>{children}</AuthProvider>
+            <AuthProvider session_user={user}>
+              {children}
+              <Toaster />
+            </AuthProvider>
           </LanguageProvider>
         </Suspense>
       </body>

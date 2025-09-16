@@ -1,5 +1,6 @@
 'use client'
 
+import { useToast } from '@/hooks/use-toast'
 import { loginWithPasskey, setupPasskey } from '@/lib/passkey.auth'
 import { User } from '@prisma/client'
 import axios from 'axios'
@@ -40,6 +41,8 @@ export function AuthProvider({
 }) {
   const [user, setUser] = useState<User | null>(session_user)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { toast } = useToast()
 
   const fetchUser = async () => {
     try {
@@ -125,6 +128,11 @@ export function AuthProvider({
         try {
           await setupPasskey(email, user.id)
         } catch (err) {
+          toast({
+            variant: 'destructive',
+            title: 'Passkey setup Failed!',
+            description: 'Some error occurred while setting up the passkey.',
+          })
           console.error('Pass key setup failed')
         }
       }

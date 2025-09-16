@@ -20,7 +20,7 @@ export function Header() {
       className="w-full bg-uibgf dark:bg-slate-900 border-b border-white dark:border-gray-800 flex-shrink-0 fixed top-0 z-50 shadow-sm"
       role="banner"
     >
-      <div className="wordwise-container max-w-7xl mx-auto flex items-center gap-4 p-3 lg:p-4">
+      <div className="wordwise-container max-w-7xl mx-auto flex items-center justify-between gap-4 p-3 lg:p-4">
         {/* Brand */}
         <div className="flex items-center gap-3 min-w-[140px]">
           <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-md flex items-center justify-center text-primary font-bold text-lg">
@@ -28,7 +28,7 @@ export function Header() {
           </div>
           <div
             className={cn(
-              'font-semibold text-foreground text-lg',
+              'hidden sm:block font-semibold text-foreground text-lg',
               getLanguageFont(t.siteName)
             )}
           >
@@ -37,7 +37,7 @@ export function Header() {
         </div>
 
         {/* Search */}
-        <div className="flex-1 flex justify-center">
+        <div className="hidden sm:flex flex-1 justify-center">
           <div className="w-full max-w-[560px] relative">
             <div className="flex items-center gap-2 dark:bg-slate-950/25 border border-input dark:border-gray-800 rounded px-3">
               <Search className="h-5 w-5 text-muted-foreground" />

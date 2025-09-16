@@ -6,7 +6,7 @@ import { TrendingContent } from '@/components/trending-content'
 export function RightSidebar() {
   return (
     <aside
-      className="h-full overflow-hidden scrollbar-hide space-y-4 flex flex-col shadow-sm"
+      className="h-full overflow-hidden scrollbar-hide space-y-1 sm:flex flex-col shadow-sm pb-2 hidden"
       aria-label="Right Column"
     >
       <TopCreators />

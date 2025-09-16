@@ -13,11 +13,14 @@ import { ProfileBanner } from '@/components/profile-banner'
 import { FeedTabs } from '@/components/feed-tabs'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 export default function HomePage() {
   const { user } = useAuth()
   const { language } = useLanguage()
   const t = translations[language]
+
+  const isMobile = useIsMobile()
 
   const router = useRouter()
   useEffect(() => {
@@ -42,14 +45,16 @@ export default function HomePage() {
       <div className="h-20"></div>
       <div className="wordwise-container max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[240px_1fr]">
         {/* Sidebar (sticky) */}
-        <div className="hidden lg:block sticky top-16 self-start h-[calc(100vh-4rem)] overflow-hidden">
-          <LeftSidebar />
-        </div>
+        {!isMobile && (
+          <div className="hidden lg:block sticky top-16 self-start h-[calc(100vh-4rem)] overflow-hidden">
+            <LeftSidebar />
+          </div>
+        )}
 
         {/* Main content area */}
         <div className="flex flex-col gap-6 min-h-0">
           {/* Full-width top section spanning main+right */}
-          <div className="sticky top-16 self-start z-40 bg-uibg/75 dark:bg-slate-950/85 backdrop-blur-sm pt-4 pb-2 w-full">
+          <div className="sticky top-14 sm:top-16 self-start z-40 bg-uibg/75 dark:bg-slate-950/85 backdrop-blur-sm pt-4 pb-2 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-6">
               <div className="lg:col-span-2 flex flex-col gap-4">
                 {!user?.onboardAt && <ProfileBanner />}
@@ -66,9 +71,11 @@ export default function HomePage() {
             </div>
 
             {/* Right sidebar scrolls only within viewport */}
-            <div className="sticky top-32 self-start max-h-[calc(100vh-4rem)] overflow-y-auto">
-              <RightSidebar />
-            </div>
+            {!isMobile && (
+              <div className="sticky top-32 self-start max-h-[calc(100vh-4rem)] overflow-y-auto">
+                <RightSidebar />
+              </div>
+            )}
           </div>
         </div>
       </div>

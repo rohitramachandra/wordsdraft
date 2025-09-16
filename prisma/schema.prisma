@@ -20,6 +20,27 @@ enum Language {
   TELUGU
 }
 
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum Visibility {
+  PUBLIC
+  FRIENDS_ONLY
+  PRIVATE
+}
+
+enum PostCategory {
+  GENERAL
+  TECH
+  ART
+  LIFESTYLE
+  EDUCATION
+  ENTERTAINMENT
+}
+
+
 model User {
   id         String    @id @default(cuid())
   email      String    @unique
@@ -37,9 +58,13 @@ model User {
   state      String?
   passkeys   Passkey[]
   sessions   Session[]
+  posts      Post[]
+  comments   Comment[]
+  likes      Like[]
   createdAt  DateTime  @default(now())
   onboardAt  DateTime?
 }
+
 
 model Passkey {
   id           String   @id @default(cuid())
@@ -48,14 +73,14 @@ model Passkey {
   credentialId String   @unique
   publicKey    String
   counter      Int      @default(0)
-  transports   String? // JSON array
+  transports   String?
   createdAt    DateTime @default(now())
 }
 
 model OtpCode {
   id         String    @id @default(cuid())
   email      String
-  codeHash   String // store hashed code, never plain
+  codeHash   String
   expiresAt  DateTime
   consumedAt DateTime?
   createdAt  DateTime  @default(now())
@@ -67,7 +92,7 @@ model OtpCode {
 }
 
 model Session {
-  id        String   @id // opaque random ID stored in cookie
+  id        String   @id
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
@@ -77,4 +102,56 @@ model Session {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model Post {
+  id         String       @id @default(cuid())
+  content    String
+  authorId   String
+  author     User         @relation(fields: [authorId], references: [id])
+  media      PostMedia[]  // one-to-many relation (max 4 per post)
+  comments   Comment[]
+  likes      Like[]
+  parentId   String?
+  parent     Post?        @relation("PostToReplies", fields: [parentId], references: [id])
+  replies    Post[]       @relation("PostToReplies")
+  visibility Visibility   @default(PUBLIC)
+  category   PostCategory @default(GENERAL)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([category])
+}
+
+
+model PostMedia {
+  id        String   @id @default(cuid())
+  url       String
+  type      MediaType
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId]) // one like per user per post
 }

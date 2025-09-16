@@ -24,7 +24,7 @@ const navigationItems = [
 export function LeftSidebar() {
   return (
     <aside
-      className="fixed z-40 bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 h-fit flex flex-col gap-24 shadow-sm"
+      className="fixed z-40 h-[calc(100vh-5.7rem)] bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 flex flex-col shadow-sm"
       aria-label="Main Navigation"
     >
       <nav className="flex-1">

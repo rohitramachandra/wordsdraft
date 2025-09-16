@@ -8,7 +8,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '@/components/ui/popover'
-import { useTheme } from 'next-themes'
 import { LanguageSelector } from '@/components/language-selector'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'

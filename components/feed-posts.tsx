@@ -2,6 +2,10 @@
 
 import { PostCard } from '@/components/post-card'
 import { PollPost } from '@/components/poll-post'
+import { usePostsStore } from '@/store/posts.store'
+import { useEffect } from 'react'
+import { fetchPosts } from '@/lib/posts'
+import { PostCardSkeleton } from './postcard-skeleton'
 
 const samplePosts = [
   {
@@ -73,12 +77,37 @@ const samplePoll = {
 }
 
 export function FeedPosts() {
+  const { posts, setPosts, loading, setLoading, setError } = usePostsStore()
+  useEffect(() => {
+    async function loadPosts() {
+      setLoading(true)
+      try {
+        const data = await fetchPosts({ limit: 10 })
+        setPosts(data)
+      } catch (err: any) {
+        setError(err.message || 'Failed to load posts')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPosts()
+  }, [setPosts, setLoading, setError])
+
+  if (loading)
+    return Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)
+  if (!posts.length) return <div>No posts found</div>
   return (
-    <div className="space-y-4 lg:space-y-5 pb-12">
-      {samplePosts.map((post) => (
+    <div className="space-y-1 pb-12">
+      {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
-      <PollPost post={samplePoll} />
+      {posts.length > 0 && (
+        <p className="text-center text-xs text-uiacc font-semibold py-2">
+          That's it, you're all caught up!
+        </p>
+      )}
+      {/* <PollPost post={samplePoll} /> */}
     </div>
   )
 }

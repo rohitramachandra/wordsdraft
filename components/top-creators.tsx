@@ -26,7 +26,7 @@ export function TopCreators() {
       </div>
 
       <div className="space-y-3">
-        <div className="max-h-52 overflow-y-scroll scrollbar-hide flex flex-col gap-4">
+        <div className="max-h-58 overflow-y-scroll scrollbar-hide flex flex-col gap-4">
           {/* Other creators */}
           {topCreators.slice(1).map((creator, index) => (
             <div key={index} className="flex items-center gap-2.5">
