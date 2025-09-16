@@ -1,26 +1,27 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { usePostsStore } from '@/store/posts.store'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
 
-const tabs = [
-  { label: 'My Feed', active: true },
-  { label: 'Following', active: false },
-  { label: 'Literature', active: false },
-  { label: 'Philosophy', active: false },
-  { label: 'Science', active: false },
-  { label: 'Art & Illustration', active: false },
-  { label: 'Writing', active: false },
-  { label: 'Fiction', active: false },
-  { label: 'International', active: false },
-  { label: 'News', active: false },
+export const tabs = [
+  { key: null, label: 'My Feed' },
+  { key: 'FOLLOWING', label: 'Following' },
+  { key: 'GENERAL', label: 'General' },
+  { key: 'TECH', label: 'Technology' },
+  { key: 'ART', label: 'Art & Illustration' },
+  { key: 'LIFESTYLE', label: 'Lifestyle' },
+  { key: 'EDUCATION', label: 'Education' },
+  { key: 'ENTERTAINMENT', label: 'Entertainment' },
 ]
 
 export function FeedTabs() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const { category, setCategory } = usePostsStore()
 
   const checkScrollability = () => {
     if (scrollRef.current) {
@@ -71,11 +72,12 @@ export function FeedTabs() {
       >
         {tabs.map((tab) => (
           <button
-            key={tab.label}
+            key={tab.key}
+            onClick={() => setCategory(tab.key)}
             className={cn(
               'flex-shrink-0 border rounded px-3 py-1.5 text-xs lg:text-sm font-medium transition-colors',
-              tab.active
-                ? 'bg-uibg dark:bg-slate-950 border-uiacc text-uiacc font-semibold shadow-sm'
+              tab.key === category
+                ? 'bg-uibg dark:bg-slate-950 border-uiacc text-uiacc '
                 : 'bg-uibgf dark:bg-slate-900 text-foreground border-gray-400 dark:border-gray-800 hover:bg-muted'
             )}
           >

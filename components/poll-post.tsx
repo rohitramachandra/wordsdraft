@@ -6,27 +6,14 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 interface PollPostProps {
   post: {
     id: string
-    author: {
-      name: string
-      username: string
-      avatar: string
-    }
     content: string
-    publishedIn: string
-    timeAgo: string
+    author: { id: string; name: string; penName: string; dImage: string | null }
+    media: { id: string; url: string; type: string }[]
+    _count: { comments: number; likes: number }
     category: string
-    poll: {
-      options: Array<{
-        text: string
-        percentage: number
-      }>
-    }
-    reactions: {
-      likes: number
-      reposts: number
-      comments: number
-      views: number
-    }
+    visibility: string
+    createdAt: string
+    updatedAt: string
   }
 }
 
@@ -50,11 +37,11 @@ export function PollPost({ post }: PollPostProps) {
             </span>
             <span className="text-muted-foreground">·</span>
             <span className="text-muted-foreground text-xs">
-              Published in {post.publishedIn}
+              Published in {/* {post.publishedIn} */}
             </span>
           </div>
           <div className="text-xs text-muted-foreground mt-0.5">
-            {post.timeAgo} · {post.category}
+            {/* {post.timeAgo} */} · {post.category}
           </div>
         </div>
       </div>
@@ -63,7 +50,7 @@ export function PollPost({ post }: PollPostProps) {
         {post.content}
       </div>
 
-      <div className="space-y-3 mb-4">
+      {/* <div className="space-y-3 mb-4">
         {post.poll.options.map((option, index) => (
           <div key={index} className="text-sm">
             <div className="mb-1.5">{option.text}</div>
@@ -77,7 +64,7 @@ export function PollPost({ post }: PollPostProps) {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div
         className="flex items-center gap-4 text-muted-foreground text-sm"
@@ -85,19 +72,19 @@ export function PollPost({ post }: PollPostProps) {
       >
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <Heart className="h-4 w-4" />
-          <span>{post.reactions.likes}</span>
+          <span>{post._count.likes}</span>
         </button>
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <Repeat2 className="h-4 w-4" />
-          <span>{post.reactions.reposts}</span>
+          <span>{/* {post.reactions.reposts} */}25</span>
         </button>
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <MessageCircle className="h-4 w-4" />
-          <span>{post.reactions.comments}</span>
+          <span>{post._count.comments}</span>
         </button>
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <Eye className="h-4 w-4" />
-          <span>{post.reactions.views}</span>
+          <span>{/* {post.reactions.views} */}40</span>
         </button>
       </div>
     </article>

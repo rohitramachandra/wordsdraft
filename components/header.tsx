@@ -12,7 +12,6 @@ import { UserPopover } from './popovers/user-popover'
 import { motion } from 'motion/react'
 
 export function Header() {
-  const { user } = useAuth()
   const { language, getLanguageFont } = useLanguage()
   const t = translations[language]
   return (
@@ -22,7 +21,7 @@ export function Header() {
     >
       <div className="wordwise-container max-w-7xl mx-auto flex items-center justify-between gap-4 p-3 lg:p-4">
         {/* Brand */}
-        <div className="flex items-center gap-3 min-w-[140px]">
+        <div className="flex items-center gap-3 sm:min-w-[140px]">
           <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-md flex items-center justify-center text-primary font-bold text-lg">
             <img src="Vector.png" />
           </div>

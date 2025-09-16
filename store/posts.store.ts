@@ -13,9 +13,11 @@ export interface Post {
 }
 
 interface PostsState {
+  category: string | null
   posts: Post[]
   loading: boolean
   error: string | null
+  setCategory: (category: string | null) => void
   setPosts: (posts: Post[]) => void
   addPosts: (posts: Post[]) => void
   setLoading: (loading: boolean) => void
@@ -23,9 +25,11 @@ interface PostsState {
 }
 
 export const usePostsStore = create<PostsState>((set) => ({
+  category: null,
   posts: [],
   loading: true,
   error: null,
+  setCategory: (category: string | null) => set({ category }),
   setPosts: (posts) => set({ posts }),
   addPosts: (posts) => set((state) => ({ posts: [...posts, ...state.posts] })),
   setLoading: (loading) => set({ loading }),
