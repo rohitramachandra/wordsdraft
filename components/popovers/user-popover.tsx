@@ -10,6 +10,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ToolTippedButton } from '../tooltipped-button'
 
 export function UserPopover() {
   const { user, logout } = useAuth()
@@ -19,9 +20,10 @@ export function UserPopover() {
     <Popover open={open} onOpenChange={setOpen}>
       {/* Avatar trigger */}
       <PopoverTrigger asChild>
-        <button
+        <ToolTippedButton
+          label="Profile"
           className={cn(
-            'rounded-full focus:outline-none ring-offset-background transition',
+            'w-8 h-8 rounded-full focus:outline-none ring-offset-background transition',
             open && 'ring-2 ring-uiacc ring-offset-2'
           )}
         >
@@ -32,7 +34,7 @@ export function UserPopover() {
             />
             <AvatarFallback>{user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
           </Avatar>
-        </button>
+        </ToolTippedButton>
       </PopoverTrigger>
 
       {/* Popover Content */}

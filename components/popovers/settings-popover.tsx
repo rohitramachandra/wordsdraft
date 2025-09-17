@@ -11,6 +11,7 @@ import {
 import { LanguageSelector } from '@/components/language-selector'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { ToolTippedButton } from '../tooltipped-button'
 
 export function SettingsPopover() {
   const [open, setOpen] = useState(false)
@@ -41,14 +42,15 @@ export function SettingsPopover() {
     <Popover open={open} onOpenChange={setOpen}>
       {/* Trigger */}
       <PopoverTrigger asChild>
-        <Button
+        <ToolTippedButton
           variant="ghost"
           size="sm"
+          label="Settings"
           className={cn(
             'p-0 transition-colors',
             open
               ? 'bg-uiacc hover:bg-uiacchl dark:hover:bg-uiacchl text-accent-foreground rounded'
-              : 'hover:bg-uibg dark:hover:bg-slate-950'
+              : 'hover:bg-classic-200 dark:hover:bg-slate-950'
           )}
         >
           <motion.div
@@ -70,7 +72,7 @@ export function SettingsPopover() {
               )}
             />
           </motion.div>
-        </Button>
+        </ToolTippedButton>
       </PopoverTrigger>
 
       {/* Popup Content */}

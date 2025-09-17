@@ -3,6 +3,7 @@
 import { PostComposer } from '@/components/post-composer'
 import { FeedPosts } from '@/components/feed-posts'
 import { useAuth } from '@/contexts/auth-context'
+import { EnhancedPostComposer } from './enhanced-post-composer'
 
 export function MainContent() {
   const { user } = useAuth()
@@ -22,7 +23,8 @@ export function MainContent() {
           aria-hidden="true"
         />
 
-        <PostComposer />
+        <EnhancedPostComposer />
+        {/* <PostComposer /> */}
 
         <div className="text-sm font-semibold text-foreground mt-6 px-2">
           My Feed
