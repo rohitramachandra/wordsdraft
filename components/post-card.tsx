@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { timeAgo } from '@/utils/timeconverter'
 import { useState } from 'react'
 import { useIsMobile } from '@/hooks/use-mobile'
+import DOMPurify from 'dompurify'
 
 interface PostCardProps {
   post: {
@@ -31,6 +32,18 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const [showFull, setShowFull] = useState(false)
   const isMobile = useIsMobile()
+
+  // Strip HTML for truncation
+  const textContent =
+    new DOMParser().parseFromString(post.content, 'text/html').body
+      .textContent || ''
+
+  const shouldTruncate = textContent.length > 150
+  const truncatedText = `${textContent.slice(0, 150)}...`
+
+  // Sanitize HTML for safe rendering
+  const sanitizedHTML = DOMPurify.sanitize(post.content)
+
   return (
     <article
       className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 shadow-sm"
@@ -39,9 +52,17 @@ export function PostCard({ post }: PostCardProps) {
       <div className="flex flex-col gap-5">
         <div className="flex gap-3 items-start">
           <Avatar className="w-9 h-9 flex-shrink-0">
-            <AvatarFallback className="bg-muted text-muted-foreground">
-              {post.author.name.charAt(0)}
-            </AvatarFallback>
+            {post.author.dImage ? (
+              <img
+                src={post.author.dImage}
+                alt={post.author.name}
+                className="w-full h-full rounded-full object-cover"
+              />
+            ) : (
+              <AvatarFallback className="bg-muted text-muted-foreground">
+                {post.author.name.charAt(0)}
+              </AvatarFallback>
+            )}
           </Avatar>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1 flex-wrap text-sm">
@@ -58,15 +79,18 @@ export function PostCard({ post }: PostCardProps) {
             </div>
           </div>
         </div>
+
         <div className="flex gap-3">
           {!isMobile && <div className="min-w-9"></div>}
           <div className="flex flex-col gap-5">
-            <div className=" text-foreground leading-relaxed transition-all whitespace-pre-line">
-              {post.content.length > 150 && !showFull
-                ? `${post.content.slice(0, 150)}...`
-                : post.content}
+            <div className="text-foreground leading-relaxed transition-all whitespace-pre-line text-sm show-content">
+              {shouldTruncate && !showFull ? (
+                truncatedText
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
+              )}
 
-              {post.content.length > 150 && (
+              {shouldTruncate && (
                 <div className="mt-1.5 flex justify-end">
                   <Button
                     onClick={() => setShowFull((prev) => !prev)}
@@ -89,19 +113,19 @@ export function PostCard({ post }: PostCardProps) {
               )}
             </div>
 
-            {/* {post.hasImage && (
-        <div
-          className="w-full h-48 lg:h-64 bg-muted rounded-lg mb-3"
-          style={{
-            backgroundImage:
-              "url('/placeholder.svg?height=260&width=860&text=Post+Image')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-          role="img"
-          aria-label="post image"
-        />
-      )} */}
+            {/* Media rendering example (optional, uncomment if needed)
+            {post.media.length > 0 && (
+              <div
+                className="w-full h-48 lg:h-64 bg-muted rounded-lg mb-3"
+                style={{
+                  backgroundImage: `url(${post.media[0].url})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+                role="img"
+                aria-label="post image"
+              />
+            )} */}
 
             <div
               className="flex items-center gap-5 text-muted-foreground text-sm"
@@ -113,7 +137,7 @@ export function PostCard({ post }: PostCardProps) {
               </button>
               <button className="flex items-center gap-1.5 hover:text-pink-500 transition-colors">
                 <SquareChevronDown className="h-4 w-4" />
-                <span>{/* {post.reactions.reposts} */}25</span>
+                <span>25</span>
               </button>
               <button className="flex items-center gap-1.5 hover:text-classic-500 transition-colors">
                 <MessageSquareText className="h-4 w-4" />
@@ -121,7 +145,7 @@ export function PostCard({ post }: PostCardProps) {
               </button>
               <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
                 <ChartColumn className="h-4 w-4" />
-                <span>{/* {post.reactions.views} */}40</span>
+                <span>40</span>
               </button>
             </div>
           </div>

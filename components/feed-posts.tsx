@@ -45,6 +45,7 @@ export function FeedPosts() {
         {tabs.find((t) => t.key === category)?.label ?? 'Feed'}
       </Card>
     )
+
   return (
     <div className="space-y-1 pb-12">
       {posts.map((post) =>

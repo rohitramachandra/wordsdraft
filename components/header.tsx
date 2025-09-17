@@ -5,11 +5,11 @@ import { useLanguage } from '@/contexts/language-context'
 import { translations } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { Search, Bell, MessageSquare, MessageSquareShare } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { SettingsPopover } from './popovers/settings-popover'
 import { UserPopover } from './popovers/user-popover'
 import { motion } from 'motion/react'
+import { ToolTippedButton } from './tooltipped-button'
 
 export function Header() {
   const { language, getLanguageFont } = useLanguage()
@@ -60,13 +60,19 @@ export function Header() {
             <span className="sm:hidden">App</span>
           </Button> */}
 
-          <Button variant="ghost" size="sm">
-            <Bell className="h-5 w-5" />
-          </Button>
-          <Button
+          <ToolTippedButton
             variant="ghost"
             size="sm"
-            className="hover:bg-uibg dark:hover:bg-slate-950 p-0"
+            label="Notifications"
+            className="hover:bg-classic-200 dark:hover:bg-slate-950"
+          >
+            <Bell className="h-5 w-5" />
+          </ToolTippedButton>
+          <ToolTippedButton
+            variant="ghost"
+            size="sm"
+            className="hover:bg-classic-200 dark:hover:bg-slate-950 p-0"
+            label="Chat"
           >
             <motion.div
               initial={{ rotate: 0 }}
@@ -80,7 +86,7 @@ export function Header() {
               <MessageSquare className="absolute opacity-100 group-hover:opacity-0 h-5 w-5" />
               <MessageSquareShare className="absolute group-hover:opacity-1000 opacity-0 h-5 w-5" />
             </motion.div>
-          </Button>
+          </ToolTippedButton>
           <SettingsPopover />
           <UserPopover />
         </div>
