@@ -1,26 +1,27 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { usePostsStore } from '@/store/posts.store'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
 
-const tabs = [
-  { label: 'My Feed', active: true },
-  { label: 'Following', active: false },
-  { label: 'Literature', active: false },
-  { label: 'Philosophy', active: false },
-  { label: 'Science', active: false },
-  { label: 'Art & Illustration', active: false },
-  { label: 'Writing', active: false },
-  { label: 'Fiction', active: false },
-  { label: 'International', active: false },
-  { label: 'News', active: false },
+export const tabs = [
+  { key: null, label: 'My Feed' },
+  { key: 'FOLLOWING', label: 'Following' },
+  { key: 'GENERAL', label: 'General' },
+  { key: 'TECH', label: 'Technology' },
+  { key: 'ART', label: 'Art & Illustration' },
+  { key: 'LIFESTYLE', label: 'Lifestyle' },
+  { key: 'EDUCATION', label: 'Education' },
+  { key: 'ENTERTAINMENT', label: 'Entertainment' },
 ]
 
 export function FeedTabs() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const { category, setCategory } = usePostsStore()
 
   const checkScrollability = () => {
     if (scrollRef.current) {
@@ -50,11 +51,11 @@ export function FeedTabs() {
   }
 
   return (
-    <div className="relative flex items-center rounded-md overflow-hidden">
+    <div className="relative w-full flex items-center rounded-md overflow-hidden px-3 sm:px-0">
       <button
         onClick={scrollLeft}
         className={cn(
-          'absolute left-0 z-10 flex items-center justify-center pl-2 pr-12 py-2 bg-gradient-to-r from-uibg via-uibg to-transparent rounded-md transition-opacity',
+          'absolute left-0 z-10 flex items-center justify-center pl-2 pr-12 py-2 bg-gradient-to-r from-uibg dark:from-slate-950 via-uibg dark:via-slate-950 to-transparent rounded-md transition-opacity',
           canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         aria-label="Scroll left"
@@ -64,19 +65,20 @@ export function FeedTabs() {
 
       <div
         ref={scrollRef}
-        className="flex gap-2 items-center px-1 overflow-x-auto scrollbar-hide scroll-smooth"
+        className="flex w-full gap-2 items-center px-1 overflow-x-auto scrollbar-hide scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onScroll={checkScrollability}
         aria-label="Feed Tabs"
       >
         {tabs.map((tab) => (
           <button
-            key={tab.label}
+            key={tab.key}
+            onClick={() => setCategory(tab.key)}
             className={cn(
-              'flex-shrink-0 border rounded-md px-3 py-1.5 text-xs lg:text-sm font-medium transition-colors',
-              tab.active
-                ? 'bg-uibg border-uiacc text-uiacc font-semibold shadow-sm'
-                : 'bg-uibgf text-foreground border-gray-400 hover:bg-muted'
+              'flex-shrink-0 border rounded px-3 py-1.5 text-xs lg:text-sm font-medium transition-colors',
+              tab.key === category
+                ? 'bg-uibg dark:bg-slate-950 border-uiacc text-uiacc '
+                : 'bg-uibgf dark:bg-slate-900 text-foreground border-gray-400 dark:border-gray-800 hover:bg-muted'
             )}
           >
             {tab.label}
@@ -87,7 +89,7 @@ export function FeedTabs() {
       <button
         onClick={scrollRight}
         className={cn(
-          'absolute right-0 z-10 flex items-center justify-center pr-2 pl-12 py-2 bg-gradient-to-r from-transparent via-uibg to-uibg rounded-md transition-opacity',
+          'absolute right-0 z-10 flex items-center justify-center pr-2 pl-12 py-2 bg-gradient-to-r from-transparent via-uibg dark:via-slate-950 to-uibg dark:to-slate-950 rounded-md transition-opacity',
           canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
         aria-label="Scroll right"

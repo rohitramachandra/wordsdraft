@@ -24,7 +24,7 @@ export async function guardOnboarded() {
   const session = await getSessionUser(cookie)
   if (!session) redirect('/login')
 
-  if (session.user.onboardAt) redirect('/')
+  if (!!session.user.onboardAt) redirect('/')
 }
 
 export async function guardNonOnboarded() {

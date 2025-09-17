@@ -13,6 +13,7 @@ import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { COOKIE } from '@/nextConstants'
 import prisma from '@/utils/db'
+import { Toaster } from '@/components/ui/toaster'
 
 const anekDevanagari = Anek_Devanagari({
   subsets: ['devanagari', 'latin'],
@@ -67,13 +68,30 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-hide">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme') ||
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                document.body.classList.toggle('dark', theme === 'dark');
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
-        className={`font-sans antialiased ${anekLatin.variable} ${anekDevanagari.variable} ${anekKannada.variable} ${anekTelugu.variable}`}
+        className={`scrollbar-hide font-sans antialiased ${anekLatin.variable} ${anekDevanagari.variable} ${anekKannada.variable} ${anekTelugu.variable}`}
       >
         <Suspense fallback={null}>
           <LanguageProvider>
-            <AuthProvider session_user={user}>{children}</AuthProvider>
+            <AuthProvider session_user={user}>
+              {children}
+              <Toaster />
+            </AuthProvider>
           </LanguageProvider>
         </Suspense>
       </body>

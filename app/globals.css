@@ -146,7 +146,6 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* WordsMyth Specific styles */
-  --wordwise-shadow: 0 1px 3px rgba(16, 24, 32, 0.06);
   --wordwise-max-width: 1240px;
 }
 
@@ -194,8 +193,6 @@
     /* Added WordWise specific body styles */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    height: 100vh;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
   }
@@ -232,10 +229,6 @@ button {
 
 /* Added WordWise specific utility classes */
 @layer utilities {
-  .wordwise-shadow {
-    box-shadow: var(--wordwise-shadow);
-  }
-
   .wordwise-container {
     max-width: var(--wordwise-max-width);
     width: 100%;

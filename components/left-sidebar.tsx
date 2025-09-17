@@ -3,23 +3,20 @@
 import {
   Home,
   Users,
-  BookOpen,
   Edit,
-  MessageCircle,
-  Folder,
+  BriefcaseBusiness,
   Calendar,
   Book,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { motion } from 'motion/react'
 
 const navigationItems = [
-  { icon: Home, label: 'Home', active: true },
+  { icon: Home, label: 'Society', active: true },
   { icon: Users, label: 'Circles', active: false },
-  { icon: BookOpen, label: 'News', active: false },
   { icon: Edit, label: 'Handpost', active: false },
-  { icon: MessageCircle, label: 'Messages', active: false },
-  { icon: Folder, label: 'Projects', active: false },
+  { icon: BriefcaseBusiness, label: 'Jobs', active: false },
   { icon: Calendar, label: 'Events', active: false },
   { icon: Book, label: 'Book Store', active: false },
 ]
@@ -27,7 +24,7 @@ const navigationItems = [
 export function LeftSidebar() {
   return (
     <aside
-      className="bg-uibgf border border-white rounded p-3 wordwise-shadow h-fit flex flex-col gap-24"
+      className="fixed z-40 h-[calc(100vh-5.7rem)] bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 flex flex-col shadow-sm"
       aria-label="Main Navigation"
     >
       <nav className="flex-1">
@@ -36,22 +33,41 @@ export function LeftSidebar() {
             const Icon = item.icon
             return (
               <li key={item.label}>
-                <button
+                <motion.button
+                  initial="initial"
+                  whileHover="hover"
                   className={cn(
-                    'w-full flex items-center gap-3 px-2 py-2.5 rounded-md text-sm font-medium transition-colors',
+                    'w-full flex items-center gap-3 border border-transparent px-2 py-2.5 rounded text-sm font-medium transition-colors group',
                     item.active
-                      ? 'bg-[#e9f4f1] text-[#053d36] border-l-4 border-primary font-semibold'
-                      : 'text-foreground hover:bg-muted'
+                      ? 'text-white bg-uiacc font-semibold'
+                      : 'text-foreground hover:bg-uibg dark:hover:bg-slate-950/25 hover:border-uiacc'
                   )}
                 >
-                  <Icon
-                    className={cn(
-                      'h-4 w-4 flex-shrink-0',
-                      item.active ? 'text-[#053d36]' : 'text-muted-foreground'
-                    )}
-                  />
+                  {/* Icon wiggle animation */}
+                  <motion.div
+                    variants={{
+                      initial: { rotate: 0 },
+                      hover: item.active
+                        ? {}
+                        : {
+                            rotate: [0, -10, 10, -6, 6, 0],
+                            transition: { duration: 0.5 },
+                          },
+                    }}
+                    className="flex-shrink-0"
+                  >
+                    <Icon
+                      className={cn(
+                        'h-4 w-4',
+                        item.active
+                          ? 'text-white'
+                          : 'text-muted-foreground group-hover:text-uiacc'
+                      )}
+                    />
+                  </motion.div>
+
                   {item.label}
-                </button>
+                </motion.button>
               </li>
             )
           })}
@@ -59,8 +75,8 @@ export function LeftSidebar() {
       </nav>
 
       {/* CTA Section */}
-      <div className="mt-4 bg-[#eef7f6] border border-[#dcefe9] rounded-lg p-3">
-        <div className="text-sm text-[#0a3c36] font-medium mb-2">
+      <div className="mt-4 bg-uibg dark:bg-slate-800 border border-uiacc/25 dark:border-gray-700 rounded p-3">
+        <div className="text-sm text-uiacc dark:text-uiacc font-medium mb-2">
           <strong>
             Get recognized,
             <br />
@@ -68,7 +84,7 @@ export function LeftSidebar() {
           </strong>
         </div>
         <Button
-          className="w-full bg-[#053d36] hover:bg-[#042d28] text-white text-xs"
+          className="w-full bg-uiacc dark:bg-uiacc hover:bg-[#042d28] text-white text-xs"
           size="sm"
         >
           Learn more

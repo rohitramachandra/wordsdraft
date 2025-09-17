@@ -49,7 +49,7 @@ const PASSIONS = [
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, refreshUser } = useAuth()
   const { t, getLanguageFont, language } = useLanguage()
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -74,6 +74,7 @@ export default function OnboardingPage() {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null)
   const [uploadedS3URL, setUploadedS3URL] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const avatars = {
     MALE: [
@@ -127,19 +128,6 @@ export default function OnboardingPage() {
     setPreviewUrl(avatar)
   }
 
-  // Redirect to home if user is already logged in
-  useEffect(() => {
-    if (!user) {
-      router.push('/login')
-    }
-
-    if (user?.onboardAt) router.push('/')
-  }, [user, router])
-
-  if (!user) {
-    return null
-  }
-
   const handleNextStep = (e: React.FormEvent) => {
     e.preventDefault()
     setDirection(1)
@@ -179,20 +167,32 @@ export default function OnboardingPage() {
     try {
       setLoading(true)
 
-      const res = await axios.post('/api/user/onboarding', {
+      await axios.post('/api/user/onboarding', {
         ...formData,
         photo: uploadedS3URL ?? selectedAvatar ?? '',
       })
 
-      const data = res.data
-      console.log(data)
-
-      router.push('/home')
+      await refreshUser()
+      setIsSuccess(true)
+      router.push('/')
     } catch (err) {
+      setIsSuccess(false)
       console.error('Onboarding error:', err)
     } finally {
       setLoading(false)
     }
+  }
+
+  // Redirect to home if user is already logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+    }
+    if (!!user?.onboardAt) router.push('/')
+  }, [user, router])
+
+  if (!user) {
+    return null
   }
 
   const stepComponents = [
@@ -697,7 +697,7 @@ export default function OnboardingPage() {
         <div className="flex flex-col sm:flex-row justify-between gap-2 mt-4">
           <Button
             type="button"
-            disabled={loading}
+            disabled={loading || isSuccess}
             onClick={handlePreviousStep}
             variant="outline"
             className={cn(
@@ -710,7 +710,7 @@ export default function OnboardingPage() {
 
           <Button
             type="submit"
-            disabled={loading}
+            disabled={loading || isSuccess}
             className={cn(
               'flex-1 sm:w-2/3 bg-uiacc hover:bg-uiacchl text-white h-12 rounded font-medium order-1 sm:order-2',
               getLanguageFont(t.complete)

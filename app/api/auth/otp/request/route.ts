@@ -2,7 +2,7 @@ import { issueOTP } from '@/services/auth/otp.service'
 import { rateLimit } from '@/utils/rateLimit'
 import { z } from 'zod'
 import { sendHTMLMail } from '@/services/email/email.service'
-import { checkUserExists } from '@/services/auth/user.service'
+import { checkUserExists } from '@/services/user/user.service'
 
 export async function POST(req: Request) {
   const { email } = z

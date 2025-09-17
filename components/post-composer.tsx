@@ -6,19 +6,66 @@ import { useState, useRef, useEffect } from 'react'
 import { ImageIcon, BarChart3, Smile, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/contexts/auth-context'
+import { useToast } from '@/hooks/use-toast'
+import axios from 'axios'
+import { usePostsStore } from '@/store/posts.store'
 
 export function PostComposer() {
+  const { user } = useAuth()
+  const { addPosts } = usePostsStore()
+
   const [content, setContent] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { toast } = useToast()
 
   const isPostEnabled = content.trim().length > 0
 
-  const handleSubmit = () => {
+  async function uploadPost(files: File[], content: string, category: string) {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Login to add post!',
+        description: 'You need to be logged in to post content.',
+      })
+      return
+    }
+
+    try {
+      const formData = new FormData()
+      formData.append('authorId', user.id)
+      formData.append('content', content)
+      formData.append('category', category)
+      files.forEach((file) => formData.append('media', file))
+
+      const res = await axios.post('/api/post/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      return res.data
+    } catch (err: any) {
+      console.error('Error uploading post:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Failed to upload post',
+        description: err?.response?.data?.error || err.message,
+      })
+    }
+  }
+
+  const handleSubmit = async () => {
     if (!isPostEnabled) return
-    console.log('Post submitted:', content)
+    setLoading(true)
+    const res = await uploadPost([], content, 'GENERAL')
+    addPosts([res.data])
     setContent('')
+    setLoading(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -37,13 +84,17 @@ export function PostComposer() {
 
   return (
     <section
-      className="bg-uibgf border border-white rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 shadow-sm"
       aria-label="Create Post"
     >
       <div className="flex gap-3 items-start">
         <Avatar className="w-9 h-9 lg:w-10 lg:h-10 flex-shrink-0">
+          <AvatarImage
+            src={user?.dImage ?? '/placeholder.svg?height=32&width=32'}
+            alt={user?.name ?? 'User'}
+          />
           <AvatarFallback className="bg-muted text-muted-foreground">
-            U
+            {user?.name[0].toUpperCase()}
           </AvatarFallback>
         </Avatar>
 
@@ -54,8 +105,8 @@ export function PostComposer() {
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Share your thoughts..."
-            className="min-h-[42px] resize-none border-[#e9efee] bg-card text-sm leading-relaxed focus-visible:ring-1 focus-visible:ring-primary"
-            rows={1}
+            className="min-h-32 resize-none dark:bg-slate-950/50 border-[#e9efee] dark:border-gray-800 bg-card text-sm leading-relaxed focus-visible:ring-1 focus-visible:ring-uiacc rounded"
+            rows={4}
           />
 
           <div className="flex items-center justify-between gap-3">
@@ -103,16 +154,14 @@ export function PostComposer() {
 
             <Button
               onClick={handleSubmit}
-              disabled={!isPostEnabled}
+              disabled={!isPostEnabled || loading}
               className={cn(
-                'px-4 py-1.5 text-xs lg:text-sm font-semibold rounded-md transition-colors',
-                isPostEnabled
-                  ? 'bg-[#053d36] hover:bg-[#042d28] text-white'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed'
+                'px-4 py-1.5 text-xs lg:text-sm font-semibold rounded transition-colors',
+                isPostEnabled && 'bg-uiacc hover:bg-uiacchl text-white'
               )}
               size="sm"
             >
-              Post
+              {loading ? 'Posting' : 'Post'}
             </Button>
           </div>
         </div>

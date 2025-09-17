@@ -1,73 +1,95 @@
 'use client'
 
-import { Heart, Repeat2, MessageCircle, Eye } from 'lucide-react'
+import {
+  SquareChevronUp,
+  SquareChevronDown,
+  MessageSquareText,
+  ChartColumn,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { timeAgo } from '@/utils/timeconverter'
+import { useState } from 'react'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 interface PostCardProps {
   post: {
     id: string
-    author: {
-      name: string
-      username: string
-      avatar: string
-    }
     content: string
-    publishedIn: string
-    timeAgo: string
+    author: { id: string; name: string; penName: string; dImage: string | null }
+    media: { id: string; url: string; type: string }[]
+    _count: { comments: number; likes: number }
     category: string
-    hasImage?: boolean
-    reactions: {
-      likes: number
-      reposts: number
-      comments: number
-      views: number
-    }
+    visibility: string
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export function PostCard({ post }: PostCardProps) {
+  const [showFull, setShowFull] = useState(false)
+  const isMobile = useIsMobile()
   return (
     <article
-      className="bg-uibgf border border-white rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 shadow-sm"
       aria-label="Post"
     >
-      <div className="flex gap-3 items-start mb-3">
-        <Avatar className="w-9 h-9 flex-shrink-0">
-          <AvatarFallback className="bg-muted text-muted-foreground">
-            {post.author.name.charAt(0)}
-          </AvatarFallback>
-        </Avatar>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1 flex-wrap text-sm">
-            <span className="font-semibold text-[#0f2b2a]">
-              {post.author.name}
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-muted-foreground text-xs">
-              Published in {post.publishedIn}
-            </span>
-          </div>
-          <div className="text-xs text-muted-foreground mt-0.5">
-            Posted {post.timeAgo} · Category: {post.category}
+      <div className="flex flex-col gap-5">
+        <div className="flex gap-3 items-start">
+          <Avatar className="w-9 h-9 flex-shrink-0">
+            <AvatarFallback className="bg-muted text-muted-foreground">
+              {post.author.name.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1 flex-wrap text-sm">
+              <span className="font-semibold text-black dark:text-white">
+                {post.author.name}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <span className="text-muted-foreground text-xs">
+                {/* Published in {post.publishedIn} */}
+              </span>
+            </div>
+            <div className="text-xs text-muted-foreground mt-0.5">
+              {timeAgo(post.createdAt)} · {post.category}
+            </div>
           </div>
         </div>
-      </div>
+        <div className="flex gap-3">
+          {!isMobile && <div className="min-w-9"></div>}
+          <div className="flex flex-col gap-5">
+            <div className=" text-foreground leading-relaxed transition-all whitespace-pre-line">
+              {post.content.length > 150 && !showFull
+                ? `${post.content.slice(0, 150)}...`
+                : post.content}
 
-      <div className="text-sm text-foreground leading-relaxed mb-3">
-        {post.content}
-        <div className="mt-1.5">
-          <Button
-            variant="link"
-            className="h-auto p-0 text-primary text-xs font-normal"
-          >
-            View more
-          </Button>
-        </div>
-      </div>
+              {post.content.length > 150 && (
+                <div className="mt-1.5 flex justify-end">
+                  <Button
+                    onClick={() => setShowFull((prev) => !prev)}
+                    variant="link"
+                    className="h-auto p-0 text-xs font-normal text-uiacc"
+                  >
+                    {!showFull ? (
+                      <span className="flex items-center gap-1">
+                        Show more
+                        <ChevronDown className="w-2 h-2" />
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        Show less
+                        <ChevronUp className="w-2 h-2" />
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
 
-      {post.hasImage && (
+            {/* {post.hasImage && (
         <div
           className="w-full h-48 lg:h-64 bg-muted rounded-lg mb-3"
           style={{
@@ -79,28 +101,31 @@ export function PostCard({ post }: PostCardProps) {
           role="img"
           aria-label="post image"
         />
-      )}
+      )} */}
 
-      <div
-        className="flex items-center gap-4 text-muted-foreground text-sm"
-        aria-hidden="true"
-      >
-        <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
-          <Heart className="h-4 w-4" />
-          <span>{post.reactions.likes}</span>
-        </button>
-        <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
-          <Repeat2 className="h-4 w-4" />
-          <span>{post.reactions.reposts}</span>
-        </button>
-        <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
-          <MessageCircle className="h-4 w-4" />
-          <span>{post.reactions.comments}</span>
-        </button>
-        <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
-          <Eye className="h-4 w-4" />
-          <span>{post.reactions.views}</span>
-        </button>
+            <div
+              className="flex items-center gap-5 text-muted-foreground text-sm"
+              aria-hidden="true"
+            >
+              <button className="flex items-center gap-1.5 hover:text-teal-500 transition-colors">
+                <SquareChevronUp className="h-4 w-4" />
+                <span>{post._count.likes}</span>
+              </button>
+              <button className="flex items-center gap-1.5 hover:text-pink-500 transition-colors">
+                <SquareChevronDown className="h-4 w-4" />
+                <span>{/* {post.reactions.reposts} */}25</span>
+              </button>
+              <button className="flex items-center gap-1.5 hover:text-classic-500 transition-colors">
+                <MessageSquareText className="h-4 w-4" />
+                <span>{post._count.comments}</span>
+              </button>
+              <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
+                <ChartColumn className="h-4 w-4" />
+                <span>{/* {post.reactions.views} */}40</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </article>
   )

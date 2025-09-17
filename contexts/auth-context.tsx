@@ -1,5 +1,6 @@
 'use client'
 
+import { useToast } from '@/hooks/use-toast'
 import { loginWithPasskey, setupPasskey } from '@/lib/passkey.auth'
 import { User } from '@prisma/client'
 import axios from 'axios'
@@ -13,6 +14,7 @@ import {
 
 interface AuthContextType {
   user: User | null
+  refreshUser: () => Promise<void>
   login: (
     email: string,
     password: string
@@ -40,17 +42,27 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(session_user)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get('/api/auth/me')
-        setUser(res.data.user)
-      } catch (error) {
-        setUser(null)
-      }
+  const { toast } = useToast()
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get('/api/auth/me')
+      setUser(res.data.user)
+    } catch (error) {
+      setUser(null)
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchUser()
   }, [])
+
+  const refreshUser = async () => {
+    setIsLoading(true)
+    await fetchUser()
+  }
 
   const login = async (
     email: string
@@ -116,6 +128,11 @@ export function AuthProvider({
         try {
           await setupPasskey(email, user.id)
         } catch (err) {
+          toast({
+            variant: 'destructive',
+            title: 'Passkey setup Failed!',
+            description: 'Some error occurred while setting up the passkey.',
+          })
           console.error('Pass key setup failed')
         }
       }
@@ -141,7 +158,15 @@ export function AuthProvider({
 
   return (
     <AuthContext.Provider
-      value={{ user, login, signup, logout, login_confirm, isLoading }}
+      value={{
+        user,
+        refreshUser,
+        login,
+        signup,
+        logout,
+        login_confirm,
+        isLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

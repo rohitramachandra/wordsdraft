@@ -22,9 +22,9 @@ const trendingItems = [
 
 export function TrendingContent() {
   return (
-    <div className="bg-uibgf border border-white rounded p-3 wordwise-shadow">
+    <div className="bg-uibgf max-h-80 overflow-y-scroll scrollbar-hide dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 shadow-sm">
       <div className="flex justify-between items-center mb-3">
-        <div className="font-semibold text-sm">Trending on WordWise</div>
+        <div className="font-semibold text-sm">Trending on WordsMyth</div>
         <div className="text-xs text-muted-foreground">Today</div>
       </div>
 
@@ -40,10 +40,10 @@ export function TrendingContent() {
               }}
             />
             <div className="flex-1 min-w-0">
-              <div className="font-semibold text-sm text-foreground">
+              <div className="text-xs text-muted-foreground leading-relaxed">
                 {item.author}
               </div>
-              <div className="text-sm text-muted-foreground leading-relaxed">
+              <div className="font-semibold text-sm text-foreground">
                 {item.title}
               </div>
             </div>

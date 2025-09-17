@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { consumeOtp } from '@/services/auth/otp.service'
-import { getUserByEmail } from '@/services/auth/user.service'
+import { getUserByEmail } from '@/services/user/user.service'
 import { NextResponse } from 'next/server'
 import { createSession } from '@/services/auth/session.service'
 import { setHttpOnlyCookie } from '@/lib/cookies'

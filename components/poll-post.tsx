@@ -6,34 +6,21 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 interface PollPostProps {
   post: {
     id: string
-    author: {
-      name: string
-      username: string
-      avatar: string
-    }
     content: string
-    publishedIn: string
-    timeAgo: string
+    author: { id: string; name: string; penName: string; dImage: string | null }
+    media: { id: string; url: string; type: string }[]
+    _count: { comments: number; likes: number }
     category: string
-    poll: {
-      options: Array<{
-        text: string
-        percentage: number
-      }>
-    }
-    reactions: {
-      likes: number
-      reposts: number
-      comments: number
-      views: number
-    }
+    visibility: string
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export function PollPost({ post }: PollPostProps) {
   return (
     <article
-      className="bg-uibgf border border-white rounded p-3 lg:p-4 wordwise-shadow"
+      className="bg-uibgf dark:bg-slate-900 border border-white dark:border-gray-800 rounded p-3 lg:p-4 shadow-sm"
       aria-label="Poll Post"
     >
       <div className="flex gap-3 items-start mb-3">
@@ -45,16 +32,16 @@ export function PollPost({ post }: PollPostProps) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1 flex-wrap text-sm">
-            <span className="font-semibold text-[#0f2b2a]">
+            <span className="font-semibold text-black dark:text-white">
               {post.author.name}
             </span>
             <span className="text-muted-foreground">·</span>
             <span className="text-muted-foreground text-xs">
-              Published in {post.publishedIn}
+              Published in {/* {post.publishedIn} */}
             </span>
           </div>
           <div className="text-xs text-muted-foreground mt-0.5">
-            Posted {post.timeAgo} · Category: {post.category}
+            {/* {post.timeAgo} */} · {post.category}
           </div>
         </div>
       </div>
@@ -63,13 +50,13 @@ export function PollPost({ post }: PollPostProps) {
         {post.content}
       </div>
 
-      <div className="space-y-3 mb-4">
+      {/* <div className="space-y-3 mb-4">
         {post.poll.options.map((option, index) => (
           <div key={index} className="text-sm">
             <div className="mb-1.5">{option.text}</div>
-            <div className="w-full h-4 bg-[#e9efee] rounded-full overflow-hidden">
+            <div className="w-full h-8 bg-[#e9efee] dark:bg-slate-800 rounded overflow-hidden">
               <div
-                className="h-full bg-[#053d36] flex items-center justify-end pr-2 text-white text-xs leading-4"
+                className="h-full bg-uiacc flex items-center justify-end py-2 pr-2 text-white text-xs"
                 style={{ width: `${option.percentage}%` }}
               >
                 {option.percentage}%
@@ -77,7 +64,7 @@ export function PollPost({ post }: PollPostProps) {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div
         className="flex items-center gap-4 text-muted-foreground text-sm"
@@ -85,19 +72,19 @@ export function PollPost({ post }: PollPostProps) {
       >
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <Heart className="h-4 w-4" />
-          <span>{post.reactions.likes}</span>
+          <span>{post._count.likes}</span>
         </button>
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <Repeat2 className="h-4 w-4" />
-          <span>{post.reactions.reposts}</span>
+          <span>{/* {post.reactions.reposts} */}25</span>
         </button>
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <MessageCircle className="h-4 w-4" />
-          <span>{post.reactions.comments}</span>
+          <span>{post._count.comments}</span>
         </button>
         <button className="flex items-center gap-1.5 hover:text-foreground transition-colors">
           <Eye className="h-4 w-4" />
-          <span>{post.reactions.views}</span>
+          <span>{/* {post.reactions.views} */}40</span>
         </button>
       </div>
     </article>
